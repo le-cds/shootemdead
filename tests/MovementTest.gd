@@ -10,7 +10,7 @@ var last_house = null
 var enemies_survived = 0
 var enemies_killed = 0
 
-var house_scene = preload("res://scenes/House.tscn")
+var house_scene = preload("res://tests/House.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,7 +22,7 @@ func _ready():
 		var house = spawn_house(x)
 		x += house.get_building_width() + HOUSE_SPACING
 
-func _process(delta):
+func _physics_process(delta):
 	displacement += delta * speed
 	if displacement >= 1:
 		var displacement_rounded = floor(displacement)
@@ -37,7 +37,8 @@ func _process(delta):
 			
 			if last_house.get_building_x() + last_house.get_building_width() + HOUSE_SPACING <= screen_width + 10:
 				spawn_house(last_house.get_building_x() + last_house.get_building_width() + HOUSE_SPACING)
-	
+
+func _process(delta):
 	$Label.text = str(enemies_killed) + " killed\n" + str(enemies_survived) + " survived"
 	
 	

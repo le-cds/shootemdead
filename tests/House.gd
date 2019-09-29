@@ -10,7 +10,7 @@ const RECT_HEIGHT_VARIATION = 50
 
 var rnd = RandomNumberGenerator.new()
 
-var Enemy = preload("res://scenes/Enemy.tscn")
+var Enemy = preload("res://tests/Enemy.tscn")
 var enemy
 
 func _ready():

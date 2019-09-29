@@ -12,12 +12,12 @@ _global_script_classes=[ {
 "base": "ColorRect",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://scenes/Enemy.gd"
+"path": "res://tests/Enemy.gd"
 }, {
 "base": "Node2D",
 "class": "House",
 "language": "GDScript",
-"path": "res://scenes/House.gd"
+"path": "res://tests/House.gd"
 } ]
 _global_script_class_icons={
 "Enemy": "",
@@ -27,13 +27,15 @@ _global_script_class_icons={
 [application]
 
 config/name="Shoot Em Dead"
-run/main_scene="res://scenes/MovementTest.tscn"
+run/main_scene="res://tests/MovementTest.tscn"
 config/icon="res://assets/icon.png"
 
 [display]
 
 window/size/width=640
 window/size/height=360
+window/size/test_width=1280
+window/size/test_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
