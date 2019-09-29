@@ -14,3 +14,10 @@ margin_bottom = 360.0
 texture = ExtResource( 2 )
 
 [node name="Rectangles" type="Node" parent="."]
+
+[node name="Label" type="Label" parent="."]
+margin_left = 9.0
+margin_top = 9.0
+margin_right = 101.0
+margin_bottom = 43.0
+text = "0"

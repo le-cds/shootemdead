@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "ColorRect",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://scenes/Enemy.gd"
+}, {
+"base": "Node2D",
+"class": "House",
+"language": "GDScript",
+"path": "res://scenes/House.gd"
+} ]
 _global_script_class_icons={
-
+"Enemy": "",
+"House": ""
 }
 
 [application]
@@ -23,8 +34,6 @@ config/icon="res://assets/icon.png"
 
 window/size/width=640
 window/size/height=360
-window/size/test_width=1080
-window/size/test_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 

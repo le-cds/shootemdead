@@ -11,3 +11,7 @@ margin_right = 162.0
 margin_bottom = 235.0
 texture = ExtResource( 2 )
 stretch_mode = 2
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Building"]
+rect = Rect2( 0, 0, 20, 20 )
+[connection signal="screen_exited" from="Building/VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
