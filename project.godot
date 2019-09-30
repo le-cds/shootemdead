@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "EndlessSidescroller",
+"language": "GDScript",
+"path": "res://scripts/EndlessSidescroller.gd"
+}, {
 "base": "ColorRect",
 "class": "Enemy",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://tests/House.gd"
 } ]
 _global_script_class_icons={
+"EndlessSidescroller": "",
 "Enemy": "",
 "House": ""
 }
