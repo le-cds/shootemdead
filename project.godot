@@ -34,7 +34,7 @@ _global_script_class_icons={
 
 config/name="Shoot Em Dead"
 run/main_scene="res://tests/MovementTest.tscn"
-config/icon="res://assets/icon.png"
+config/icon="res://icon.png"
 
 [debug]
 
