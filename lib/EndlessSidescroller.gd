@@ -87,6 +87,7 @@ func _ready() -> void:
 	if Engine.editor_hint:
 		set_process(false)
 		set_physics_process(false)
+		return
 	
 	# If we should pre_spawn, this is the moment to do so
 	if pre_spawn:

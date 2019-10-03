@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/Clouds/Near/CloudsNear.png" type="Texture" id=1]
+
+
+
+
+[node name="CloudsNear" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 1 )

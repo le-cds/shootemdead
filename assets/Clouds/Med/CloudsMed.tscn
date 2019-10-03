@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/Clouds/Med/CloudsMed.png" type="Texture" id=1]
+
+
+
+
+[node name="CloudsMed" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 1 )

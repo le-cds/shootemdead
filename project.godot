@@ -13,27 +13,14 @@ _global_script_classes=[ {
 "class": "EndlessSidescroller",
 "language": "GDScript",
 "path": "res://lib/EndlessSidescroller.gd"
-}, {
-"base": "ColorRect",
-"class": "Enemy",
-"language": "GDScript",
-"path": "res://tests/Enemy.gd"
-}, {
-"base": "Node2D",
-"class": "House",
-"language": "GDScript",
-"path": "res://tests/House.gd"
 } ]
 _global_script_class_icons={
-"EndlessSidescroller": "",
-"Enemy": "",
-"House": ""
+"EndlessSidescroller": ""
 }
 
 [application]
 
 config/name="Shoot Em Dead"
-run/main_scene="res://tests/MovementTest.tscn"
 config/icon="res://icon.png"
 
 [debug]
