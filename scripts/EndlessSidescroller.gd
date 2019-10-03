@@ -1,3 +1,4 @@
+tool
 extends Node2D
 
 # This class spawns scenes and lets them scroll through the screen from right to
@@ -15,15 +16,24 @@ signal scene_spawned(scene)
 signal scene_left(scene)
 
 
-# The scene to be spawned. This must be set for the whole thing to work. A scene
+# Enumerates the possible ways for choosing the next scene.
+enum SceneSelectionMode { LINEAR, RANDOM }
+
+
+# Possible scenes to be spawned. This must contain at least one scene for the
+# whole thing to work. When a new scene needs to be spawned, this will either
+# go through the scenes in linear succession, or choose a random one. A scene
 # spawned by this thing must either be a Control or a Sprite.
-export (PackedScene) var scene
+export (Array, PackedScene) var scenes
+
+# How to choose the next scene to be spawned.
+export (SceneSelectionMode) var scene_selection := SceneSelectionMode.RANDOM
 
 # The width of this sidescroller. New scenes are spawned to the right.
-export var sidescroller_width := 100
+export (int, 20, 5000) var sidescroller_width := 100
 
 # The distance between two scenes.
-export var distance := 10
+export (int, 0, 5000) var distance := 10
 
 # If true, we will fill the screen with spawned scenes during initialization.
 # Otherwise, we will start spawning only when physics processing starts.
@@ -45,6 +55,9 @@ export var spawn_group := ""
 # Whether this is actually running at the moment.
 export var running := false
 
+
+# Index of the most recently spawned scene in our list of scenes.
+var last_scene_index := -1
 
 # The most recently added scene.
 var last_scene: CanvasItem = null
@@ -103,11 +116,23 @@ func _physics_process(delta) -> void:
 			_spawn(sidescroller_width + 5)
 
 
+func _get_configuration_warning():
+	if scenes == null or scenes.size() == 0:
+		return "You must configure at least one scene to be spawned."
+	
+	return ""
+
+
 # Spawns a copy of our scene at the given x coordinate and our own y coordinate. Also
 # triggers the scene_spawned signal. After this method has finished, last_scene will
 # contain a reference to the spawned scene.
 func _spawn(x: int) -> void:
-	var new_scene = scene.instance()
+	# Try to get our hands upon a scene that we can instantiate
+	var new_packed_scene = _choose_next_scene()
+	if new_packed_scene == null:
+		return
+	
+	var new_scene = new_packed_scene.instance()
 	
 	# If we support the scene's root type, initialize it, add it to our list of
 	# children and tell the world about it
@@ -121,6 +146,38 @@ func _spawn(x: int) -> void:
 		emit_signal("scene_spawned", new_scene)
 		
 		last_scene = new_scene
+
+
+# Chooses the next scene to be spawned, subject to the 
+func _choose_next_scene() -> PackedScene:
+	if scenes == null or scenes.size() == 0:
+		# Nothing to spawn
+		return null
+	
+	elif scenes.size() == 1:
+		# Only one possible scene
+		return scenes[0]
+	
+	else:
+		# What we do now depends on our scene selection mode...
+		match scene_selection:
+			SceneSelectionMode.LINEAR:
+				# Simply return the next scene
+				last_scene_index += 1
+				return scenes[last_scene_index % scenes.size()]
+				
+			SceneSelectionMode.RANDOM:
+				if last_scene_index == -1:
+					# If we never returned a scene, we can simply choose a random one
+					last_scene_index = randi() % scenes.size()
+				else:
+					# Don't choose the same scene that we chose before
+					var rand_index = randi() % (scenes.size() - 1)
+					if rand_index >= last_scene_index:
+						rand_index += 1
+					last_scene_index = rand_index
+				
+				return scenes[last_scene_index]
 
 
 # Removes the given scene and triggers the scene_left signal.
