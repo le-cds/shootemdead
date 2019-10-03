@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "EndlessSidescroller",
 "language": "GDScript",
-"path": "res://scripts/EndlessSidescroller.gd"
+"path": "res://lib/EndlessSidescroller.gd"
 }, {
 "base": "ColorRect",
 "class": "Enemy",

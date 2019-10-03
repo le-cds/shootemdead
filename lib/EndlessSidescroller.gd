@@ -9,6 +9,16 @@ extends Node2D
 class_name EndlessSidescroller
 
 
+####################################################################################
+# Types
+
+# Enumerates the possible ways for choosing the next scene.
+enum SceneSelectionMode { LINEAR, RANDOM }
+
+
+####################################################################################
+# Signals
+
 # Triggered when a new scene has been spawned.
 signal scene_spawned(scene)
 
@@ -16,9 +26,8 @@ signal scene_spawned(scene)
 signal scene_left(scene)
 
 
-# Enumerates the possible ways for choosing the next scene.
-enum SceneSelectionMode { LINEAR, RANDOM }
-
+####################################################################################
+# Configuration Options
 
 # Possible scenes to be spawned. This must contain at least one scene for the
 # whole thing to work. When a new scene needs to be spawned, this will either
@@ -30,7 +39,7 @@ export (Array, PackedScene) var scenes
 export (SceneSelectionMode) var scene_selection := SceneSelectionMode.RANDOM
 
 # The width of this sidescroller. New scenes are spawned to the right.
-export (int, 20, 5000) var sidescroller_width := 100
+export (int, 20, 5000) var sidescroller_width := 100 setget set_sidescroller_width
 
 # The distance between two scenes.
 export (int, 0, 5000) var distance := 10
@@ -56,6 +65,9 @@ export var spawn_group := ""
 export var running := false
 
 
+####################################################################################
+# State
+
 # Index of the most recently spawned scene in our list of scenes.
 var last_scene_index := -1
 
@@ -67,7 +79,15 @@ var last_scene: CanvasItem = null
 var accumulated_distance := 0.0
 
 
+####################################################################################
+# Object Lifecycle
+
 func _ready() -> void:
+	# Disable processing if we're running in the editor
+	if Engine.editor_hint:
+		set_process(false)
+		set_physics_process(false)
+	
 	# If we should pre_spawn, this is the moment to do so
 	if pre_spawn:
 		var x = distance
@@ -80,7 +100,7 @@ func _ready() -> void:
 			if last_scene == null:
 				break
 			else:
-				x += _get_width(last_scene) + distance
+				x += _get_size(last_scene).x + distance
 
 
 # Moves the scenes along and spawns a new one, if necessary.
@@ -101,12 +121,12 @@ func _physics_process(delta) -> void:
 			# Check if the first child has to be removed
 			if get_child_count() > 0:
 				var leftmost_child = get_child(0)
-				if _get_x(leftmost_child) + _get_width(leftmost_child) < 0:
+				if _get_right_border_x(leftmost_child) < 0:
 					_despawn(leftmost_child)
 			
 		# Check if it's time to spawn the next scene
 		if last_scene != null:
-			var next_x = _get_x(last_scene) + _get_width(last_scene) + distance
+			var next_x = _get_right_border_x(last_scene) + distance
 			
 			# Already spawn a new scene a bit earlier than strictly necessary
 			if next_x < sidescroller_width + 5:
@@ -116,12 +136,19 @@ func _physics_process(delta) -> void:
 			_spawn(sidescroller_width + 5)
 
 
-func _get_configuration_warning():
-	if scenes == null or scenes.size() == 0:
-		return "You must configure at least one scene to be spawned."
-	
-	return ""
+####################################################################################
+# Accessors
 
+# Updates the node if the width changes and we're in the editor, since the width
+# is visualized there.
+func set_sidescroller_width(new_width: int) -> void:
+	sidescroller_width = new_width
+	if Engine.editor_hint:
+		update()
+
+
+####################################################################################
+# Scene Spawning / Despawning
 
 # Spawns a copy of our scene at the given x coordinate and our own y coordinate. Also
 # triggers the scene_spawned signal. After this method has finished, last_scene will
@@ -136,11 +163,11 @@ func _spawn(x: int) -> void:
 	
 	# If we support the scene's root type, initialize it, add it to our list of
 	# children and tell the world about it
-	if _is_valid_scene(new_scene):
+	if _is_supported_scene(new_scene):
 		if spawn_group.length() > 0:
 			new_scene.add_to_group(spawn_group)
 		
-		_set_x(new_scene, x)
+		_set_position(new_scene, Vector2(x, 0))
 		
 		add_child(new_scene)
 		emit_signal("scene_spawned", new_scene)
@@ -186,61 +213,101 @@ func _despawn(scene: CanvasItem):
 	emit_signal("scene_left", scene)
 
 
-# Moves the given child scene the given distance to the left. If that causes the scene
-# to leave the screen, queues the scene for removal and triggers the scene_left signal.
-func _move(scene: CanvasItem, distance: float) -> void:
-	_set_x(scene, _get_x(scene) - distance)
-
-
 # Checks wether the scene's root object is one we can work with.
-func _is_valid_scene(scene: Object) -> bool:
+func _is_supported_scene(scene: Object) -> bool:
 	return scene is Control or scene is Sprite
 
 
-# Returns the x coordinate or the given scene's left boundary.
-func _get_x(scene: CanvasItem) -> float:
-	assert(_is_valid_scene(scene))
+####################################################################################
+# Scene Movement
+
+# Moves the given child scene the given distance to the left. If that causes the
+# scene to leave the screen, queues the scene for removal and triggers the
+# scene_left signal.
+func _move(scene: CanvasItem, distance: float) -> void:
+	var pos: Vector2 = _get_position(scene)
+	var size: Vector2 = _get_size(scene)
+	
+	pos.x -= distance
+	pos.y = -size.y
+	
+	_set_position(scene, pos)
+
+
+# Returns the position of the given scene's top left corner. Modifications to the
+# vector won't influence the scene's actual position.
+func _get_position(scene: CanvasItem) -> Vector2:
+	assert(_is_supported_scene(scene))
 	
 	if scene is Control:
 		var control: Control = scene as Control
-		return control.rect_position.x
-		
+		var pos: Vector2 = control.rect_position
+		return Vector2(pos.x, pos.y)
+	
 	elif scene is Sprite:
-		# The x coordinate marks the sprite's center
+		# The position marks the sprite's center
 		var sprite: Sprite = scene as Sprite
-		return sprite.position.x - sprite.get_rect().size.x
+		var pos: Vector2 = sprite.position
+		var size: Vector2 = sprite.get_rect().size
+		return Vector2(pos.x - size.x / 2, pos.y - size.y / 2)
 	
 	else:
-		# This shoud not happen
-		return 0.0
+		return Vector2(0, 0)
 
 
-# Ensures the given scene's left boundary ends up at (local) coordinate x.
-func _set_x(scene: CanvasItem, x: float) -> void:
-	assert(_is_valid_scene(scene))
+# Sets the position of the given scene's top left corner.
+func _set_position(scene: CanvasItem, new_pos: Vector2) -> void:
+	assert(_is_supported_scene(scene))
 	
 	if scene is Control:
 		var control: Control = scene as Control
-		control.rect_position.x = x
+		control.rect_position.x = new_pos.x
+		control.rect_position.y = new_pos.y
 		
 	elif scene is Sprite:
-		# The x coordinate marks the sprite's center
+		# The position marks the sprite's center
 		var sprite: Sprite = scene as Sprite
-		sprite.position.x = x + sprite.get_rect().size.x
+		var size: Vector2 = sprite.get_rect().size
+		sprite.position.x = new_pos.x + size.x / 2
+		sprite.position.y = new_pos.y + size.y / 2
 
 
 # Returns the width of the scene's root object (if it's an object we know).
-func _get_width(scene: CanvasItem) -> float:
-	assert(_is_valid_scene(scene))
+func _get_size(scene: CanvasItem) -> Vector2:
+	assert(_is_supported_scene(scene))
 	
 	if scene is Control:
 		var control: Control = scene as Control
-		return control.rect_size.x
+		return control.rect_size
 		
 	elif scene is Sprite:
 		var sprite: Sprite = scene as Sprite
-		return sprite.get_rect().size.x
+		return sprite.get_rect().size
 	
 	else:
 		# This should not happen
-		return 1.0
+		return Vector2(1, 1)
+
+
+# Convenience method to return the x coordinate of the scene's right border.
+func _get_right_border_x(scene: CanvasItem) -> float:
+	return _get_position(scene).x + _get_size(scene).x
+
+
+####################################################################################
+# Editor Support
+
+func _get_configuration_warning():
+	if scenes == null or scenes.size() == 0:
+		return "You must configure at least one scene to be spawned."
+	
+	return ""
+
+
+# Draws the extent of our sidescrolling area
+func _draw():
+	# Only draw stuff if we're inside the editor
+	if not Engine.editor_hint:
+		return
+	
+	draw_line(Vector2(0, 0), Vector2(sidescroller_width - 1, 0), Color.gray, 2)
