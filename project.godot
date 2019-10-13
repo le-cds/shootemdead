@@ -37,6 +37,7 @@ run/main_scene="res://screens/Main/Main.tscn"
 boot_splash/image="res://assets/splash.png"
 boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
+config/version="0.1.0"
 
 [debug]
 
@@ -79,7 +80,7 @@ texture={
 
 [locale]
 
-translations=PoolStringArray( "res://screens/Menu/Main/MenuMain.de.translation", "res://screens/Menu/Main/MenuMain.en.translation" )
+translations=PoolStringArray( "res://locale/localization.de.translation", "res://locale/localization.en.translation" )
 
 [rendering]
 

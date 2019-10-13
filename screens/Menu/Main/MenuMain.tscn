@@ -4,6 +4,7 @@
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade"
+length = 0.9
 tracks/0/type = "value"
 tracks/0/path = NodePath("ButtonContainer:rect_position")
 tracks/0/interp = 1
@@ -11,10 +12,22 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.4, 0.9 ),
+"transitions": PoolRealArray( 1, 0.5, 1 ),
 "update": 0,
-"values": [ Vector2( 646.312, 236 ), Vector2( 415, 235.693 ) ]
+"values": [ Vector2( 646, 236 ), Vector2( 646, 236 ), Vector2( 415, 236 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MiscContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4, 0.9 ),
+"transitions": PoolRealArray( 1, 0.5, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [node name="MenuMain" type="Node2D"]
@@ -22,9 +35,9 @@ script = ExtResource( 1 )
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
 margin_left = 415.0
-margin_top = 235.693
+margin_top = 236.0
 margin_right = 643.0
-margin_bottom = 315.693
+margin_bottom = 316.0
 custom_constants/separation = 10
 
 [node name="ButtonPlay" type="Button" parent="ButtonContainer"]
@@ -32,7 +45,7 @@ margin_right = 228.0
 margin_bottom = 35.0
 size_flags_vertical = 3
 shortcut_in_tooltip = false
-text = "NEW_GAME_TEXT"
+text = "NEW_GAME_BUTTON"
 align = 0
 
 [node name="ButtonExit" type="Button" parent="ButtonContainer"]
@@ -40,8 +53,21 @@ margin_top = 45.0
 margin_right = 228.0
 margin_bottom = 80.0
 size_flags_vertical = 3
-text = "QUIT_TEXT"
+text = "QUIT_BUTTON"
 align = 0
+
+[node name="MiscContainer" type="HBoxContainer" parent="."]
+margin_left = 424.0
+margin_top = 335.0
+margin_right = 583.0
+margin_bottom = 358.0
+
+[node name="Label" type="Label" parent="MiscContainer"]
+margin_right = 86.0
+margin_bottom = 23.0
+size_flags_vertical = 1
+text = "Version Label"
+valign = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/fade = SubResource( 1 )

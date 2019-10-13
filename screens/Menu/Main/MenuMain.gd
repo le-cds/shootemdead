@@ -1,10 +1,12 @@
 extends State
 
 
-####################################################################################
-# Scene Objects
-
 onready var animator := $AnimationPlayer
+
+
+func _ready():
+	# We need to fill in the version number
+	$MiscContainer/Label.text = tr("VERSION_LABEL") % ProjectSettings.get("application/config/version")
 
 
 ####################################################################################
