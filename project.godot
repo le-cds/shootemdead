@@ -13,9 +13,21 @@ _global_script_classes=[ {
 "class": "EndlessSidescroller",
 "language": "GDScript",
 "path": "res://lib/EndlessSidescroller.gd"
+}, {
+"base": "Node2D",
+"class": "State",
+"language": "GDScript",
+"path": "res://lib/State.gd"
+}, {
+"base": "Node2D",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://lib/StateMachine.gd"
 } ]
 _global_script_class_icons={
-"EndlessSidescroller": ""
+"EndlessSidescroller": "",
+"State": "",
+"StateMachine": ""
 }
 
 [application]
