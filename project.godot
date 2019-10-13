@@ -77,6 +77,10 @@ texture={
 "svg/scale": 1.0
 }
 
+[locale]
+
+translations=PoolStringArray( "res://screens/Menu/Main/MenuMain.de.translation", "res://screens/Menu/Main/MenuMain.en.translation" )
+
 [rendering]
 
 quality/2d/use_pixel_snap=true
