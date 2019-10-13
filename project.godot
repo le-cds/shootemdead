@@ -39,6 +39,10 @@ boot_splash/bg_color=Color( 1, 1, 1, 1 )
 config/icon="res://icon.png"
 config/version="0.1.0"
 
+[autoload]
+
+Constants="*res://lib/Constants.gd"
+
 [debug]
 
 gdscript/warnings/unsafe_property_access=true

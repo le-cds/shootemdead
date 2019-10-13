@@ -103,10 +103,13 @@ running = true
 script = ExtResource( 9 )
 
 [node name="Game" type="Node2D" parent="StateMachine"]
+visible = false
 script = ExtResource( 10 )
 
 [node name="MenuMain" parent="StateMachine" instance=ExtResource( 11 )]
+visible = false
 position = Vector2( 0.30719, 0 )
 
 [node name="MenuPause" type="Node2D" parent="StateMachine"]
+visible = false
 script = ExtResource( 10 )
