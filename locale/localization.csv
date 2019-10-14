@@ -2,3 +2,6 @@ id,en,de
 NEW_GAME_BUTTON,Start Killing!,Und los!
 QUIT_BUTTON,Get Out,Weg hier
 VERSION_LABEL,Version %s,Version %s
+GAME_PAUSED_LABEL,Game Paused,Pause
+RESUME_BUTTON,Resume,Weiter
+MAIN_MENU_BUTTON,Main Menu,Hauptmenu
