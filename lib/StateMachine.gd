@@ -22,7 +22,7 @@ var _state_stack = []
 # State Access
 
 # Returns the currently running state.
-func get_running_state() -> State:
+func get_top_state() -> State:
 	if _state_stack.empty():
 		return null
 	else:
@@ -34,7 +34,7 @@ func get_running_state() -> State:
 
 # Transitions to the given state, replacing the newest stack state only.
 func transition_replace_single(state: State) -> void:
-	_pop()
+	_pop(false)
 	_push(state)
 
 
@@ -42,46 +42,60 @@ func transition_replace_single(state: State) -> void:
 # transition_back(...) from that state won't make sense.
 func transition_replace_all(state: State) -> void:
 	while not _state_stack.empty():
-		_pop()
+		_pop(false)
 	
 	_push(state)
 
 
 # Transitions to the given state and pushes it on our state stack.
 func transition_push(state: State) -> void:
-	# Tell the currently running state that is must pause
-	var running_state := get_running_state()
-	if running_state != null:
-		running_state.state_paused()
-	
-	# Activate and start the new state
 	_push(state)
 
 
 # Removes the current state from the stack and transitions back to the state that
 # preceded it.
 func transition_pop() -> void:
-	_pop()
-	
-	# Check if we have a new running state
-	var new_running_state := get_running_state()
-	if new_running_state != null:
-		new_running_state.state_started()
+	_pop(true)
 
 
-# If we have a running state, pauses, deactivates and removes it
-func _pop() -> void:
+# Removes all but the lowermost states and transitions back to that state.
+func transition_pop_to_root() -> void:
+	if _state_stack.size() > 1:
+		# Pop off almost all states, but only restart the last state
+		while _state_stack.size() > 1:
+			_pop(_state_stack.size() == 2)
+
+
+# If we have a running state, pauses, deactivates and removes it. The
+# parameter controls whether we restart the new top state, if any. This
+# will be false if we pop off multiple states at once or if the popped
+# state will immediately be replaced by a new state
+func _pop(start_state_below: bool) -> void:
 	# If we have a running state, pause and deactivate it
-	var running_state := get_running_state()
-	if running_state != null:
-		running_state.state_paused()
+	var top_state := get_top_state()
+	if top_state != null:
+		if top_state.is_running():
+			# This can be false if we're removing multiple states at once
+			top_state.state_paused()
+		
 		_state_stack.pop_back()
-		running_state.state_deactivated()
+		top_state.state_deactivated()
+	
+	# Start the new top state, if necessary
+	if start_state_below:
+		var new_top_state := get_top_state()
+		if new_top_state != null:
+			new_top_state.state_started()
 
 
 # Pushes, activates and starts the given state. Does not pause the previously
 # running state, if any
 func _push(state: State) -> void:
+	# Tell the currently running state that is must pause
+	var top_state := get_top_state()
+	if top_state != null and top_state.is_running():
+		top_state.state_paused()
+	
 	# Activate and start the new state
 	_state_stack.append(state)
 	state.state_activated()

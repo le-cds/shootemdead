@@ -12,11 +12,11 @@ class_name State
 # State
 
 # Whether the state is currently on the state machine's stack of states.
-var _active := false
+var _active := false setget , is_active
 
 # Whether the state is currently running. Only one state can be running at any
 # point in time.
-var _running := false
+var _running := false setget , is_running
 
 
 ####################################################################################
@@ -45,6 +45,10 @@ func state_paused() -> void:
 # management to work correctly.
 func state_deactivated() -> void:
 	_active = false
+
+
+####################################################################################
+# Getters and Setters
 
 # Returns whether the state is currently active or not.
 func is_active() -> bool:
