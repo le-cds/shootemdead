@@ -4,7 +4,8 @@ extends State
 ####################################################################################
 # Scene Objects
 
-onready var animator := $AnimationPlayer
+onready var animator: AnimationPlayer = $AnimationPlayer
+onready var version_label: Label = $MiscContainer/Label
 
 
 ####################################################################################
@@ -12,7 +13,7 @@ onready var animator := $AnimationPlayer
 
 func _ready():
 	# We need to fill in the version number
-	$MiscContainer/Label.text = tr("VERSION_LABEL") % \
+	version_label.text = tr("VERSION_LABEL") % \
 		ProjectSettings.get("application/config/version")
 
 
@@ -44,8 +45,8 @@ func state_deactivated() -> void:
 
 func _on_ButtonPlay_pressed():
 	# TODO Replace this by a transition to the game state
-	get_parent().transition_pop()
-
+	pass
+	
 
 func _on_ButtonExit_pressed():
 	# Fade out the menu before quitting

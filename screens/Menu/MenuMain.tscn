@@ -2,7 +2,6 @@
 
 [ext_resource path="res://screens/Menu/MenuMain.gd" type="Script" id=1]
 
-
 [sub_resource type="Animation" id=1]
 resource_name = "fade"
 length = 0.9
