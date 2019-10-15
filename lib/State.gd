@@ -55,6 +55,8 @@ func _init() -> void:
 # management to work correctly.
 func state_activated() -> void:
 	_active = true
+	
+	self.visible = true
 	set_process(true)
 	set_physics_process(true)
 
@@ -75,8 +77,10 @@ func state_paused() -> void:
 # management to work correctly.
 func state_deactivated() -> void:
 	_active = false
+	
 	set_process(false)
 	set_physics_process(false)
+	self.visible = false
 
 
 ####################################################################################

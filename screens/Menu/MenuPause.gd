@@ -13,11 +13,6 @@ func _process(delta: float) -> void:
 ####################################################################################
 # State Lifecycle
 
-func state_activated() -> void:
-	.state_activated()
-	self.visible = true
-
-
 func state_started() -> void:
 	.state_started()
 	
@@ -30,11 +25,6 @@ func state_paused() -> void:
 	
 	# Recover from Pause mode
 	get_tree().paused = false
-
-
-func state_deactivated() -> void:
-	.state_deactivated()
-	self.visible = false
 
 
 ####################################################################################

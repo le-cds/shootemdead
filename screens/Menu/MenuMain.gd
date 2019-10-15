@@ -20,11 +20,6 @@ func _ready():
 ####################################################################################
 # State Lifecycle
 
-func state_activated() -> void:
-	.state_activated()
-	self.visible = true
-	
-
 func state_started() -> void:
 	.state_started()
 	animator.play("fade")
@@ -33,11 +28,6 @@ func state_started() -> void:
 func state_paused() -> void:
 	.state_paused()
 	animator.play_backwards("fade")
-
-
-func state_deactivated() -> void:
-	.state_deactivated()
-	self.visible = false
 
 
 ####################################################################################
