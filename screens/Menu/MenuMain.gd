@@ -34,8 +34,8 @@ func state_paused() -> void:
 # Event Handling
 
 func _on_ButtonPlay_pressed():
-	# TODO Replace this by a transition to the game state
-	pass
+	# TODO Replace this by a signal
+	transition_push($"/root/Main/StateMachine/GameIntro")
 	
 
 func _on_ButtonExit_pressed():

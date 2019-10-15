@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://lib/State.gd" type="Script" id=1]
+[ext_resource path="res://screens/Game/GameIntro.gd" type="Script" id=1]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Intro"
@@ -53,18 +53,38 @@ tracks/3/keys = {
 "update": 0,
 "values": [ Vector2( 642, 142 ), Vector2( 350, 142 ), Vector2( 290, 142 ), Vector2( -35, 142 ) ]
 }
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.2, 3.2, 4.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "_slow_down"
+}, {
+"args": [  ],
+"method": "_speed_up"
+}, {
+"args": [  ],
+"method": "_start_game"
+} ]
+}
 
 [node name="GameIntro" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Labels" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="Three" type="Label" parent="Labels"]
 margin_left = -20.0
 margin_top = 142.0
 margin_right = 20.0
 margin_bottom = 156.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "3"
 
 [node name="Two" type="Label" parent="Labels"]
@@ -72,6 +92,7 @@ margin_left = -20.0
 margin_top = 142.0
 margin_right = 20.0
 margin_bottom = 156.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "2"
 
 [node name="One" type="Label" parent="Labels"]
@@ -79,6 +100,7 @@ margin_left = -20.0
 margin_top = 142.0
 margin_right = 20.0
 margin_bottom = 156.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "1"
 
 [node name="Kill" type="Label" parent="Labels"]
@@ -86,7 +108,10 @@ margin_left = -35.0
 margin_top = 142.0
 margin_right = 5.0
 margin_bottom = 156.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "KILL!"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Intro = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]

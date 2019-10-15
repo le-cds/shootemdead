@@ -5,14 +5,14 @@ extends Node2D
 # State
 
 # The base speed for all of our EndlessSidescroller instances.
-var _base_speed := Constants.MENU_BASE_SPEED setget set_base_speed, get_base_speed
+var _base_speed := Constants.BASE_SPEED_MENU setget set_base_speed, get_base_speed
 
 
 ####################################################################################
 # Scene Objects
 
-onready var state_machine := $StateMachine
-onready var state_menu_main := $StateMachine/MenuMain
+onready var state_machine: StateMachine = $StateMachine
+onready var state_menu_main: State = $StateMachine/MenuMain
 
 
 ####################################################################################
