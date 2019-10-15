@@ -32,6 +32,11 @@ func get_top_state() -> State:
 ####################################################################################
 # State Manipulation
 
+# Transitions to the given state and pushes it on our state stack.
+func transition_push(state: State) -> void:
+	_push(state)
+
+
 # Transitions to the given state, replacing the newest stack state only.
 func transition_replace_single(state: State) -> void:
 	_pop(false)
@@ -44,11 +49,6 @@ func transition_replace_all(state: State) -> void:
 	while not _state_stack.empty():
 		_pop(false)
 	
-	_push(state)
-
-
-# Transitions to the given state and pushes it on our state stack.
-func transition_push(state: State) -> void:
 	_push(state)
 
 
@@ -77,6 +77,7 @@ func _pop(start_state_below: bool) -> void:
 		if top_state.is_running():
 			# This can be false if we're removing multiple states at once
 			top_state.state_paused()
+			_uninstall_signal_handlers(top_state)
 		
 		_state_stack.pop_back()
 		top_state.state_deactivated()
@@ -98,5 +99,31 @@ func _push(state: State) -> void:
 	
 	# Activate and start the new state
 	_state_stack.append(state)
+	_install_signal_handlers(state)
 	state.state_activated()
 	state.state_started()
+
+
+# Registers us to handle signals emitted from the given state.
+func _install_signal_handlers(state: State) -> void:
+	state.connect("transition_push", self, "transition_push")
+	state.connect("transition_replace_single", self, "transition_replace_single")
+	state.connect("transition_replace_all", self, "transition_replace_all")
+	state.connect("transition_pop", self, "transition_pop")
+	state.connect("transition_pop_to_root", self, "transition_pop_to_root")	
+
+
+# Stops us from receiving signals from the given state.
+func  _uninstall_signal_handlers(state: State) -> void:
+	_uninstall_signal_handler(state, "transition_push")
+	_uninstall_signal_handler(state, "transition_replace_single")
+	_uninstall_signal_handler(state, "transition_replace_all")
+	_uninstall_signal_handler(state, "transition_pop")
+	_uninstall_signal_handler(state, "transition_pop_to_root")
+
+
+# Disconnect us from the signal only if we are currently connected. The
+# other case should never happen, but we decide to play it safe.
+func _uninstall_signal_handler(state: State, the_signal: String) -> void:
+	if state.is_connected(the_signal, self, the_signal):
+		state.disconnect(the_signal, self, the_signal)
