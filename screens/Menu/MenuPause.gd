@@ -42,15 +42,13 @@ func state_deactivated() -> void:
 
 # Ends the pause state by returning to the previous state
 func _resume():
-	# TODO Using get_parent() here is not good; replace by signals?
-	get_parent().transition_pop()
+	transition_pop()
 
 
 # Returns to the main menu
 func _main_menu():
 	# This assumes that the main menu state is the topmost state
-	# TODO Using get_parent() here is not good; replace by signals?
-	get_parent().transition_pop_to_root()
+	transition_pop_to_root()
 
 
 # Quits the game.

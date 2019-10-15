@@ -105,6 +105,7 @@ running = true
 script = ExtResource( 9 )
 
 [node name="GameIntro" parent="StateMachine" instance=ExtResource( 10 )]
+visible = false
 
 [node name="Game" type="Node2D" parent="StateMachine"]
 visible = false
