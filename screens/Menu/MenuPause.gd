@@ -41,9 +41,9 @@ func _main_menu():
 	transition_pop_to_root()
 
 
-# Quits the game.
+# Quits the game by stopping the state machine.
 func _quit():
-	get_tree().quit()
+	transition_replace_all(null)
 
 
 ####################################################################################

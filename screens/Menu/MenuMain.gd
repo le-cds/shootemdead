@@ -43,4 +43,5 @@ func _on_ButtonExit_pressed():
 	animator.play_backwards("fade")
 	yield(animator, "animation_finished")
 	
-	get_tree().quit()
+	# Removing all states tells our main controller to quit the game
+	transition_replace_all(null)

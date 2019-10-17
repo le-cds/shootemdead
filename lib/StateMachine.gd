@@ -12,6 +12,14 @@ class_name StateMachine
 
 
 ####################################################################################
+# Signals
+
+# Triggered whenever the state is changed. The given state was already started. If
+# no state is on the stack anymore, state will be null.
+signal state_changed(state)
+
+
+####################################################################################
 # State
 
 # Our stack of states. Index 0 holds the oldest state.
@@ -26,6 +34,8 @@ func get_top_state() -> State:
 	if _state_stack.empty():
 		return null
 	else:
+		# We're not returning the last active state here since that might not
+		# be active anymore
 		return _state_stack.back()
 
 
@@ -43,13 +53,18 @@ func transition_replace_single(state: State) -> void:
 	_push(state)
 
 
-# Transitions to the given state, replacing all states on the stack. Calling
-# transition_back(...) from that state won't make sense.
+# Transitions to the given state, replacing all states on the stack. Transitioning
+# to null as a new state will remove all states.
 func transition_replace_all(state: State) -> void:
-	while not _state_stack.empty():
-		_pop(false)
-	
-	_push(state)
+	if state != null:
+		while not _state_stack.empty():
+			_pop(false)
+		_push(state)
+	else:
+		while not _state_stack.empty():
+			# Notify everyone that the last state was removed
+			_pop(_state_stack.size() > 1)
+		emit_signal("state_changed", null)
 
 
 # Removes the current state from the stack and transitions back to the state that
@@ -87,22 +102,30 @@ func _pop(start_state_below: bool) -> void:
 		var new_top_state := get_top_state()
 		if new_top_state != null:
 			new_top_state.state_started()
+			emit_signal("state_changed", new_top_state)
+		else:
+			emit_signal("state_changed", null)
 
 
 # Pushes, activates and starts the given state. Does not pause the previously
 # running state, if any
-func _push(state: State) -> void:
+func _push(new_state: State) -> void:
 	# Tell the currently running state that is must pause
-	var top_state := get_top_state()
-	if top_state != null and top_state.is_running():
-		top_state.state_paused()
+	var previous_state := get_top_state()
+	if previous_state != null and previous_state.is_running():
+		previous_state.state_paused()
 	
 	# Activate and start the new state
-	_state_stack.append(state)
-	_install_signal_handlers(state)
-	state.state_activated()
-	state.state_started()
+	_state_stack.append(new_state)
+	_install_signal_handlers(new_state)
+	new_state.state_activated()
+	new_state.state_started()
+	
+	emit_signal("state_changed", new_state)
 
+
+####################################################################################
+# State Signal Handling
 
 # Registers us to handle signals emitted from the given state.
 func _install_signal_handlers(state: State) -> void:

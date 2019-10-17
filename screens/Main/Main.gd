@@ -19,6 +19,9 @@ onready var state_menu_main: State = $StateMachine/MenuMain
 # Lifecycle
 
 func _ready() -> void:
+	# Register event listeners
+	state_machine.connect("state_changed", self, "_state_changed")
+	
 	# Ensure that all EndlessSidescrollers have the correct base speed
 	set_base_speed(_base_speed)
 	
@@ -41,3 +44,12 @@ func set_base_speed(new_base_speed: int) -> void:
 		# Update our sidescrollers
 		for scroller in get_tree().get_nodes_in_group("sidescrollers"):
 			(scroller as EndlessSidescroller).base_speed = _base_speed
+
+
+####################################################################################
+# Event Handling
+
+func _state_changed(new_state: State) -> void:
+	if new_state == null:
+		# No active state anymore, quit the game
+		get_tree().quit()
