@@ -13,15 +13,15 @@ func _process(delta: float) -> void:
 ####################################################################################
 # State Lifecycle
 
-func state_started() -> void:
-	.state_started()
+func state_started(prev_state: State) -> void:
+	.state_started(prev_state)
 	
 	# Put Godot into Pause mode
 	get_tree().paused = true
 
 
-func state_paused() -> void:
-	.state_paused()
+func state_paused(next_state: State) -> void:
+	.state_paused(next_state)
 	
 	# Recover from Pause mode
 	get_tree().paused = false

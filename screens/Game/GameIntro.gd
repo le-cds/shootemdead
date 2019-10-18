@@ -11,8 +11,8 @@ onready var tween: Tween = $Tween
 ####################################################################################
 # State Lifecycle
 
-func state_started() -> void:
-	.state_started()
+func state_started(prev_state: State) -> void:
+	.state_started(prev_state)
 	
 	# Start our animation player, which will cause our speed modification
 	# methods to be called

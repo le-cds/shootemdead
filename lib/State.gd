@@ -63,13 +63,13 @@ func state_activated() -> void:
 # Called when this state becomes the running state. The superclass implementation
 # must be called from subclasses in ordner for activity management to work
 # correctly.
-func state_started() -> void:
+func state_started(prev_state: State) -> void:
 	_running = true
 
 # Called when this state ceases to be the running state. The superclass
 # implementation must be called from subclasses in ordner for activity management
 # to work correctly.
-func state_paused() -> void:
+func state_paused(next_state: State) -> void:
 	_running = false
 
 # Called by the state machine when this state leaves the stack of states. The
