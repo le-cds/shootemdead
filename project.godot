@@ -42,6 +42,7 @@ config/version="0.1.0"
 [autoload]
 
 Constants="*res://lib/Constants.gd"
+Settings="*res://lib/Settings.gd"
 
 [debug]
 

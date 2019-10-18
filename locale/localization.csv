@@ -1,7 +1,14 @@
 id,en,de
 NEW_GAME_BUTTON,Start Killing!,Und los!
+SETTINGS_BUTTON,Change Settings,Optionen
 QUIT_BUTTON,Get Out,Weg hier
 VERSION_LABEL,Version %s,Version %s
 GAME_PAUSED_LABEL,Game Paused,Pause
 RESUME_BUTTON,Resume,Weiter
 MAIN_MENU_BUTTON,Main Menu,Hauptmenu
+MUSIC_VOLUME_LABEL,Music,Musik
+SOUND_VOLUME_LABEL,Sound,Sound
+GORE_LABEL,Gore,Blut
+GORE_1_BUTTON,Oh yes!,Oh ja!
+GORE_2_BUTTON,Most definitely!,Auf jeden Fall!
+BACK_BUTTON,Back,Zurück

@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://screens/Menu/MenuMain.gd" type="Script" id=1]
 
 [sub_resource type="Animation" id=1]
-resource_name = "fade"
+resource_name = "fade_buttons"
 length = 0.9
 tracks/0/type = "value"
 tracks/0/path = NodePath("ButtonContainer:rect_position")
@@ -15,15 +15,19 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.4, 0.9 ),
 "transitions": PoolRealArray( 1, 0.5, 1 ),
 "update": 0,
-"values": [ Vector2( 646, 236 ), Vector2( 646, 236 ), Vector2( 415, 236 ) ]
+"values": [ Vector2( 646, 200 ), Vector2( 646, 200 ), Vector2( 415, 200 ) ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("MiscContainer:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
+
+[sub_resource type="Animation" id=2]
+resource_name = "fade_misc"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath("MiscContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
 "times": PoolRealArray( 0, 0.4, 0.9 ),
 "transitions": PoolRealArray( 1, 0.5, 1 ),
 "update": 0,
@@ -35,23 +39,32 @@ script = ExtResource( 1 )
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
 margin_left = 415.0
-margin_top = 236.0
+margin_top = 200.0
 margin_right = 643.0
-margin_bottom = 316.0
+margin_bottom = 312.0
 custom_constants/separation = 10
 
 [node name="ButtonPlay" type="Button" parent="ButtonContainer"]
 margin_right = 228.0
-margin_bottom = 35.0
+margin_bottom = 30.0
 size_flags_vertical = 3
 shortcut_in_tooltip = false
 text = "NEW_GAME_BUTTON"
 align = 0
 
-[node name="ButtonExit" type="Button" parent="ButtonContainer"]
-margin_top = 45.0
+[node name="ButtonSettings" type="Button" parent="ButtonContainer"]
+margin_top = 40.0
 margin_right = 228.0
-margin_bottom = 80.0
+margin_bottom = 70.0
+size_flags_vertical = 3
+shortcut_in_tooltip = false
+text = "SETTINGS_BUTTON"
+align = 0
+
+[node name="ButtonExit" type="Button" parent="ButtonContainer"]
+margin_top = 80.0
+margin_right = 228.0
+margin_bottom = 112.0
 size_flags_vertical = 3
 text = "QUIT_BUTTON"
 align = 0
@@ -70,6 +83,8 @@ text = "Version Label"
 valign = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/fade = SubResource( 1 )
+anims/fade_buttons = SubResource( 1 )
+anims/fade_misc = SubResource( 2 )
 [connection signal="pressed" from="ButtonContainer/ButtonPlay" to="." method="_on_ButtonPlay_pressed"]
+[connection signal="pressed" from="ButtonContainer/ButtonSettings" to="." method="_on_ButtonSettings_pressed"]
 [connection signal="pressed" from="ButtonContainer/ButtonExit" to="." method="_on_ButtonExit_pressed"]

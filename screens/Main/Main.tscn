@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://screens/Main/Main.gd" type="Script" id=1]
 [ext_resource path="res://assets/background.png" type="Texture" id=2]
@@ -9,10 +9,11 @@
 [ext_resource path="res://assets/Buildings/HighRiser/HighRiser.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/Street/Street.tscn" type="PackedScene" id=8]
 [ext_resource path="res://lib/StateMachine.gd" type="Script" id=9]
-[ext_resource path="res://screens/Game/GameIntro.tscn" type="PackedScene" id=10]
-[ext_resource path="res://lib/State.gd" type="Script" id=11]
-[ext_resource path="res://screens/Menu/MenuMain.tscn" type="PackedScene" id=12]
-[ext_resource path="res://screens/Menu/MenuPause.tscn" type="PackedScene" id=13]
+[ext_resource path="res://screens/Menu/MenuMain.tscn" type="PackedScene" id=10]
+[ext_resource path="res://screens/Menu/MenuSettings.tscn" type="PackedScene" id=11]
+[ext_resource path="res://screens/Game/GameIntro.tscn" type="PackedScene" id=12]
+[ext_resource path="res://lib/State.gd" type="Script" id=13]
+[ext_resource path="res://screens/Menu/MenuPause.tscn" type="PackedScene" id=14]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -104,16 +105,24 @@ running = true
 [node name="StateMachine" type="Node2D" parent="."]
 script = ExtResource( 9 )
 
-[node name="GameIntro" parent="StateMachine" instance=ExtResource( 10 )]
+[node name="MenuMain" parent="StateMachine" groups=[
+"menus",
+] instance=ExtResource( 10 )]
+visible = false
+position = Vector2( 0.30719, 0 )
+
+[node name="MenuSettings" parent="StateMachine" groups=[
+"menus",
+] instance=ExtResource( 11 )]
+visible = false
+position = Vector2( 0.30719, 0 )
+
+[node name="GameIntro" parent="StateMachine" instance=ExtResource( 12 )]
 visible = false
 
 [node name="Game" type="Node2D" parent="StateMachine"]
 visible = false
-script = ExtResource( 11 )
+script = ExtResource( 13 )
 
-[node name="MenuMain" parent="StateMachine" instance=ExtResource( 12 )]
-visible = false
-position = Vector2( 0.30719, 0 )
-
-[node name="MenuPause" parent="StateMachine" instance=ExtResource( 13 )]
+[node name="MenuPause" parent="StateMachine" instance=ExtResource( 14 )]
 visible = false
