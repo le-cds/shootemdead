@@ -66,7 +66,7 @@ func transition_replace_all(state: State) -> void:
 	else:
 		while not _state_stack.empty():
 			# Notify everyone that the last state was removed
-			_pop(_state_stack.size() > 1, state)
+			_pop(_state_stack.size() == 1, state)
 
 
 # Removes the current state from the stack and transitions back to the state that
