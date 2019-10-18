@@ -4,15 +4,16 @@ extends State
 ####################################################################################
 # CONSTANTS
 
-const ANIMATION_BUTTONS := "fade_buttons"
-const ANIMATION_REST := "fade_misc"
+const FADE_ANIMATION := "fade"
+const SHORT_FADE_ANIMATION := "fade_short"
 
 
 ####################################################################################
 # Scene Objects
 
-onready var animator: AnimationPlayer = $AnimationPlayer
-onready var version_label: Label = $MiscContainer/Label
+onready var _button_animator: AnimationPlayer = $ButtonAnimator
+onready var _misc_animator: AnimationPlayer = $MiscAnimator
+onready var _version_label: Label = $MiscContainer/Label
 
 
 ####################################################################################
@@ -20,7 +21,7 @@ onready var version_label: Label = $MiscContainer/Label
 
 func _ready():
 	# We need to fill in the version number
-	version_label.text = tr("VERSION_LABEL") % \
+	_version_label.text = tr("VERSION_LABEL") % \
 		ProjectSettings.get("application/config/version")
 
 
@@ -29,20 +30,24 @@ func _ready():
 
 func state_started(prev_state: State) -> void:
 	.state_started(prev_state)
-	animator.play(ANIMATION_BUTTONS)
 	
-	# Only animate the rest back in if we don't come from a menu
+	# Only animate the rest back in if we don't come from a menu.
 	if prev_state == null or not prev_state.is_in_group(Constants.GROUP_MENUS):
-		animator.play(ANIMATION_REST)
+		_button_animator.play(FADE_ANIMATION)
+		_misc_animator.play(FADE_ANIMATION)
+	else:
+		# If we come from a menu, there's no need for that initial pause in the
+		# animation
+		_button_animator.play(SHORT_FADE_ANIMATION)
 
 
 func state_paused(next_state: State) -> void:
 	.state_paused(next_state)
-	animator.play_backwards(ANIMATION_BUTTONS)
+	_button_animator.play_backwards(FADE_ANIMATION)
 	
 	# Only animate the rest out if we don't go to a menu
 	if next_state == null or not next_state.is_in_group(Constants.GROUP_MENUS):
-		animator.play_backwards(ANIMATION_REST)
+		_misc_animator.play_backwards(FADE_ANIMATION)
 
 
 ####################################################################################
@@ -59,9 +64,5 @@ func _on_ButtonSettings_pressed():
 	
 
 func _on_ButtonExit_pressed():
-	# Fade out the menu before quitting
-	animator.play_backwards("fade")
-	yield(animator, "animation_finished")
-	
 	# Removing all states tells our main controller to quit the game
 	transition_replace_all(null)
