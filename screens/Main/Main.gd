@@ -11,8 +11,9 @@ var _base_speed := Constants.BASE_SPEED_MENU setget set_base_speed, get_base_spe
 ####################################################################################
 # Scene Objects
 
-onready var state_machine: StateMachine = $StateMachine
-onready var state_menu_main: State = $StateMachine/MenuMain
+onready var _state_machine: StateMachine = $StateMachine
+onready var _state_menu_main: State = $StateMachine/MenuMain
+onready var _state_game_intro: State = $StateMachine/GameIntro
 
 
 ####################################################################################
@@ -20,13 +21,14 @@ onready var state_menu_main: State = $StateMachine/MenuMain
 
 func _ready() -> void:
 	# Register event listeners
-	state_machine.connect("state_changed", self, "_state_changed")
+	_state_machine.connect("state_changed", self, "_state_changed")
+	_state_menu_main.connect("play", self, "_new_game")
 	
 	# Ensure that all EndlessSidescrollers have the correct base speed
 	set_base_speed(_base_speed)
 	
 	# Display the menu
-	state_machine.transition_push(state_menu_main)
+	_state_machine.transition_push(_state_menu_main)
 
 
 ####################################################################################
@@ -48,6 +50,10 @@ func set_base_speed(new_base_speed: int) -> void:
 
 ####################################################################################
 # Event Handling
+
+func _new_game() -> void:
+	_state_machine.transition_push(_state_game_intro)
+
 
 func _state_changed(new_state: State) -> void:
 	if new_state == null:

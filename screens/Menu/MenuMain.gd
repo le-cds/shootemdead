@@ -2,10 +2,16 @@ extends State
 
 
 ####################################################################################
-# CONSTANTS
+# Constants
 
 const FADE_ANIMATION := "fade"
 const SHORT_FADE_ANIMATION := "fade_short"
+
+
+####################################################################################
+# Signals
+
+signal play()
 
 
 ####################################################################################
@@ -54,13 +60,11 @@ func state_paused(next_state: State) -> void:
 # Event Handling
 
 func _on_ButtonPlay_pressed():
-	# TODO Replace this by a signal
-	transition_push($"/root/Main/StateMachine/GameIntro")
+	emit_signal("play")
 
 
 func _on_ButtonSettings_pressed():
-	# TODO Replace this by a signal
-	transition_push($"/root/Main/StateMachine/MenuSettings")
+	transition_push($"../MenuSettings")
 	
 
 func _on_ButtonExit_pressed():

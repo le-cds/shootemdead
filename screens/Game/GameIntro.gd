@@ -50,5 +50,4 @@ func _speed_up() -> void:
 
 # Starts the actual game. Called by AnimationPlayer.
 func _start_game() -> void:
-	# TODO Start the game here
-	pass
+	transition_replace_single($"../Game")
