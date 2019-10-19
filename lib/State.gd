@@ -1,3 +1,4 @@
+tool
 extends Node2D
 
 # A state that can be used in a StateMachine. States can be active or inactive,
@@ -21,11 +22,18 @@ class_name State
 # Signals
 
 # Signals which correspond to the methods in StateMachine
-signal transition_push(state)
-signal transition_replace_single(state)
-signal transition_replace_all(state)
+signal transition_push(state_id)
+signal transition_replace_single(state_id)
+signal transition_replace_all(state_id)
 signal transition_pop()
 signal transition_pop_to_root()
+
+
+####################################################################################
+# Configuration Options
+
+# ID of this state.
+export (String) var state_id: String setget , get_state_id
 
 
 ####################################################################################
@@ -43,8 +51,9 @@ var _running := false setget , is_running
 # Scene Lifecycle
 
 func _init() -> void:
-	set_process(false)
-	set_physics_process(false)
+	if not Engine.is_editor_hint():
+		set_process(false)
+		set_physics_process(false)
 
 
 ####################################################################################
@@ -87,19 +96,19 @@ func state_deactivated() -> void:
 # State Machine Signalling
 
 # Transitions to the given state and pushes it on our state stack.
-func transition_push(state: State) -> void:
-	emit_signal("transition_push", state)
+func transition_push(state_id: String) -> void:
+	emit_signal("transition_push", state_id)
 
 
 # Transitions to the given state, replacing the newest stack state only.
-func transition_replace_single(state: State) -> void:
-	emit_signal("transition_replace_single", state)
+func transition_replace_single(state_id: String) -> void:
+	emit_signal("transition_replace_single", state_id)
 
 
 # Transitions to the given state, replacing all states on the stack. Calling
 # transition_back(...) from that state won't make sense.
-func transition_replace_all(state: State) -> void:
-	emit_signal("transition_replace_all", state)
+func transition_replace_all(state_id: String) -> void:
+	emit_signal("transition_replace_all", state_id)
 
 
 # Removes the current state from the stack and transitions back to the state that
@@ -116,6 +125,10 @@ func transition_pop_to_root() -> void:
 ####################################################################################
 # Getters and Setters
 
+# Returns this state's ID.
+func get_state_id() -> String:
+	return state_id
+
 # Returns whether the state is currently active or not.
 func is_active() -> bool:
 	return _active
@@ -123,3 +136,13 @@ func is_active() -> bool:
 # Returns whether the state is currently running or not.
 func is_running() -> bool:
 	return _running
+
+
+####################################################################################
+# Editor Support
+
+func _get_configuration_warning():
+	if state_id == null or state_id.length() == 0:
+		return "You must configure a non-empty state ID."
+	
+	return ""

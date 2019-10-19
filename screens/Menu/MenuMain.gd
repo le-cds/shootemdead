@@ -64,9 +64,9 @@ func _on_ButtonPlay_pressed():
 
 
 func _on_ButtonSettings_pressed():
-	transition_push($"../MenuSettings")
+	transition_push(Constants.STATE_MENU_SETTINGS)
 	
 
 func _on_ButtonExit_pressed():
 	# Removing all states tells our main controller to quit the game
-	transition_replace_all(null)
+	transition_replace_all(Constants.STATE_EXIT)

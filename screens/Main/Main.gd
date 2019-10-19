@@ -28,7 +28,7 @@ func _ready() -> void:
 	set_base_speed(_base_speed)
 	
 	# Display the menu
-	_state_machine.transition_push(_state_menu_main)
+	_state_machine.transition_push(Constants.STATE_MENU_MAIN)
 
 
 ####################################################################################
@@ -52,7 +52,7 @@ func set_base_speed(new_base_speed: int) -> void:
 # Event Handling
 
 func _new_game() -> void:
-	_state_machine.transition_push(_state_game_intro)
+	_state_machine.transition_push(Constants.STATE_GAME_INTRO)
 
 
 func _state_changed(new_state: State) -> void:

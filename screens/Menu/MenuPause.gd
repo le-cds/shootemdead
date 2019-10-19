@@ -43,7 +43,7 @@ func _main_menu():
 
 # Quits the game by stopping the state machine.
 func _quit():
-	transition_replace_all(null)
+	transition_replace_all(Constants.STATE_EXIT)
 
 
 ####################################################################################

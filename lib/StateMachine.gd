@@ -12,6 +12,13 @@ class_name StateMachine
 
 
 ####################################################################################
+# Constants
+
+# State ID representing no state.
+const NO_STATE := ""
+
+
+####################################################################################
 # Signals
 
 # Triggered whenever the state is changed. The given state was already started. If
@@ -22,11 +29,27 @@ signal state_changed(state)
 ####################################################################################
 # State
 
+# Dictionary of states and state IDs.
+var _states = {}
+
 # Our stack of states. Index 0 holds the oldest state.
 var _state_stack = []
 
 # The most recently active state.
 var _last_active_state: State = null
+
+
+####################################################################################
+# Scene Lifecycle
+
+func _ready() -> void:
+	# Collect our child states
+	for child in get_children():
+		if child is State:
+			var state := child as State
+			var state_id: String = state.get_state_id()
+			if state_id != null and state_id.length() > 0:
+				_states[state_id] = state
 
 
 ####################################################################################
@@ -46,27 +69,29 @@ func get_top_state() -> State:
 # State Manipulation
 
 # Transitions to the given state and pushes it on our state stack.
-func transition_push(state: State) -> void:
-	_push(state)
+func transition_push(state_id: String) -> void:
+	_push(_states[state_id])
 
 
 # Transitions to the given state, replacing the newest stack state only.
-func transition_replace_single(state: State) -> void:
-	_pop(false, state)
-	_push(state)
+func transition_replace_single(state_id: String) -> void:
+	var new_state: State = _states[state_id]
+	_pop(false, new_state)
+	_push(new_state)
 
 
 # Transitions to the given state, replacing all states on the stack. Transitioning
 # to null as a new state will remove all states.
-func transition_replace_all(state: State) -> void:
-	if state != null:
+func transition_replace_all(state_id: String) -> void:
+	if state_id != NO_STATE:
+		var new_state: State = _states[state_id]
 		while not _state_stack.empty():
-			_pop(false, state)
-		_push(state)
+			_pop(false, new_state)
+		_push(new_state)
 	else:
 		while not _state_stack.empty():
 			# Notify everyone that the last state was removed
-			_pop(_state_stack.size() == 1, state)
+			_pop(_state_stack.size() == 1, null)
 
 
 # Removes the current state from the stack and transitions back to the state that
