@@ -70,19 +70,42 @@ func get_top_state() -> State:
 
 # Transitions to the given state and pushes it on our state stack.
 func transition_push(state_id: String) -> void:
-	_push(_states[state_id])
+	#_push(_states[state_id])
+	var new_state: State = _states[state_id]
+	
+	_pause_topmost_state(new_state)
+	_activate_state(new_state)
+	_start_topmost_state(_last_active_state)
+	
+	_last_active_state = new_state
 
 
 # Transitions to the given state, replacing the newest stack state only.
 func transition_replace_single(state_id: String) -> void:
+	#var new_state: State = _states[state_id]
+	#_pop(false, new_state)
+	#_push(new_state)
 	var new_state: State = _states[state_id]
-	_pop(false, new_state)
-	_push(new_state)
+	
+	_pause_topmost_state(new_state)
+	_deactivate_topmost_state()
+	_activate_state(new_state)
+	_start_topmost_state(_last_active_state)
+	
+	_last_active_state = new_state
 
 
 # Transitions to the given state, replacing all states on the stack. Transitioning
 # to null as a new state will remove all states.
 func transition_replace_all(state_id: String) -> void:
+	# Only the topmost state may need to be paused
+	_pause_topmost_state(
+	
+	# Deactivate all states
+	while not _state_stack.empty():
+		
+	
+	
 	if state_id != NO_STATE:
 		var new_state: State = _states[state_id]
 		while not _state_stack.empty():
@@ -112,6 +135,33 @@ func transition_pop_to_root() -> void:
 			_pop(_state_stack.size() == 2, _state_stack[0])
 
 
+func _activate_state(new_state: State) -> void:
+	_state_stack.append(new_state)
+	new_state.state_activated()
+
+
+func _start_topmost_state(prev_state: State) -> void:
+	var top_state := get_top_state()
+	if top_state != null and not top_state.is_running():
+		_install_signal_handlers(top_state)
+		top_state.state_started(prev_state)
+
+
+func _pause_topmost_state(next_state: State) -> void:
+	var top_state := get_top_state()
+	if top_state != null and top_state.is_running():
+		# This can be false if we're removing multiple states at once
+		yield(top_state.state_paused(next_state), "completed")
+		_uninstall_signal_handlers(top_state)
+
+
+func _deactivate_topmost_state() -> void:
+	var top_state := get_top_state()
+	if top_state != null:
+		_state_stack.pop_back()
+		top_state.state_deactivated()
+
+
 # If we have a running state, pauses, deactivates and removes it. The
 # parameter controls whether we restart the new top state, if any. This
 # will be false if we pop off multiple states at once or if the popped
@@ -126,7 +176,7 @@ func _pop(start_state_below: bool, next_state: State) -> void:
 	if top_state != null:
 		if top_state.is_running():
 			# This can be false if we're removing multiple states at once
-			top_state.state_paused(next_state)
+			yield(top_state.state_paused(next_state), "completed")
 			_uninstall_signal_handlers(top_state)
 		
 		_state_stack.pop_back()
@@ -149,7 +199,7 @@ func _push(new_state: State) -> void:
 	# Tell the currently running state that is must pause
 	var previous_state := get_top_state()
 	if previous_state != null and previous_state.is_running():
-		previous_state.state_paused(new_state)
+		yield(previous_state.state_paused(new_state), "completed")
 	
 	# Activate and start the new state
 	_state_stack.append(new_state)

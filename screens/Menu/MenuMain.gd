@@ -54,6 +54,8 @@ func state_paused(next_state: State) -> void:
 	# Only animate the rest out if we don't go to a menu
 	if next_state == null or not next_state.is_in_group(Constants.GROUP_MENUS):
 		_misc_animator.play_backwards(FADE_ANIMATION)
+	
+	yield(_button_animator, "animation_finished")
 
 
 ####################################################################################
