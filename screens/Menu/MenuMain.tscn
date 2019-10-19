@@ -1,25 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://screens/Menu/MenuMain.gd" type="Script" id=1]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade"
-length = 0.9
-tracks/0/type = "value"
-tracks/0/path = NodePath("ButtonContainer:rect_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4, 0.9 ),
-"transitions": PoolRealArray( 1, 0.5, 1 ),
-"update": 0,
-"values": [ Vector2( 646, 200 ), Vector2( 646, 200 ), Vector2( 415, 200 ) ]
-}
-
-[sub_resource type="Animation" id=5]
-resource_name = "fade_short"
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("ButtonContainer:rect_position")
@@ -34,9 +18,9 @@ tracks/0/keys = {
 "values": [ Vector2( 646, 200 ), Vector2( 415, 200 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "fade"
-length = 0.9
+length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("MiscContainer:modulate")
 tracks/0/interp = 1
@@ -44,10 +28,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4, 0.9 ),
-"transitions": PoolRealArray( 1, 0.5, 1 ),
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.5, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [node name="MenuMain" type="Node2D"]
@@ -100,10 +84,9 @@ valign = 2
 
 [node name="ButtonAnimator" type="AnimationPlayer" parent="."]
 anims/fade = SubResource( 1 )
-anims/fade_short = SubResource( 5 )
 
 [node name="MiscAnimator" type="AnimationPlayer" parent="."]
-anims/fade = SubResource( 4 )
+anims/fade = SubResource( 3 )
 [connection signal="pressed" from="ButtonContainer/ButtonPlay" to="." method="_on_ButtonPlay_pressed"]
 [connection signal="pressed" from="ButtonContainer/ButtonSettings" to="." method="_on_ButtonSettings_pressed"]
 [connection signal="pressed" from="ButtonContainer/ButtonExit" to="." method="_on_ButtonExit_pressed"]

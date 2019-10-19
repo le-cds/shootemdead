@@ -19,6 +19,14 @@ onready var _gore_option_2: CheckBox = $VBoxContainer/SettingsContainer/VBoxCont
 
 
 ####################################################################################
+# Scene Lifecycle
+
+func _ready():
+	# We want to play animations when pausing
+	set_yield_on_pause(true)
+
+
+####################################################################################
 # State Lifecycle
 
 func state_started(prev_state: State) -> void:
@@ -38,8 +46,10 @@ func state_started(prev_state: State) -> void:
 
 func state_paused(next_state: State) -> void:
 	.state_paused(next_state)
+	
 	# Animate animations!
 	_animator.play_backwards(ANIMATION_BUTTONS)
+	yield(_animator, "animation_finished")
 
 
 ####################################################################################

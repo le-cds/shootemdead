@@ -39,6 +39,7 @@ func _init() -> void:
 func get_music_volume() -> float:
 	return _settings[_MUSIC_VOLUME]
 
+
 func set_music_volume(volume: float) -> void:
 	if volume >= 0.0 and volume <= 1.0:
 		AudioServer.set_bus_volume_db(
@@ -46,8 +47,10 @@ func set_music_volume(volume: float) -> void:
 			linear2db(volume))
 		_settings[_MUSIC_VOLUME] = volume
 
+
 func get_sound_volume() -> float:
 	return _settings[_SOUND_VOLUME]
+
 
 func set_sound_volume(volume: float) -> void:
 	if volume >= 0.0 and volume <= 1.0:
@@ -56,8 +59,10 @@ func set_sound_volume(volume: float) -> void:
 			linear2db(volume))
 		_settings[_SOUND_VOLUME] = volume
 
+
 func get_gore_option() -> int:
 	return _settings[_GORE_OPTION]
+
 
 func set_gore_option(gore: int) -> void:
 	if gore >= 1 and gore <= 2:

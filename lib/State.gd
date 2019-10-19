@@ -3,13 +3,17 @@ extends Node2D
 
 # A state that can be used in a StateMachine. States can be active or inactive,
 # and running or not running. As they enter the state machine's stack of states,
-# they are active. The topmost state on the stack is running. This base class
-# manages activity state. A state should only do stuff in its process methods if
-# it is currently running.
+# they are activated. The topmost state on the stack is running.
 #
 # A state which is not currently active has its processing disabled. This class
 # takes care of enabling processing again as soon as the state is activated
 # (even if it's not running).
+# 
+# States may wish to play animations as they are started or paused. If the latter
+# is the case, the state machine may need to wait for the animation to finish
+# before enabling the next state. To indicate that this should be done, call
+# set_yield_on_pause(true) and yield in your pause method. The state machine will
+# then wait for the pause method to finish before enabling the next state.
 # 
 # A state does not have a built-in reference to the state machine it appears in
 # since that would introduce a cyclic dependency. Instead, a state can instruct
@@ -38,6 +42,10 @@ export (String) var state_id: String setget , get_state_id
 
 ####################################################################################
 # State
+
+# Whether the state machine should yield on state_paused(...) to wait for fade out
+# animations to finish.
+var _yield_on_pause := false setget set_yield_on_pause, get_yield_on_pause
 
 # Whether the state is currently on the state machine's stack of states.
 var _active := false setget , is_active
@@ -69,11 +77,13 @@ func state_activated() -> void:
 	set_process(true)
 	set_physics_process(true)
 
+
 # Called when this state becomes the running state. The superclass implementation
 # must be called from subclasses in ordner for activity management to work
 # correctly.
 func state_started(prev_state: State) -> void:
 	_running = true
+
 
 # Called when this state ceases to be the running state. The superclass
 # implementation must be called from subclasses in ordner for activity management
@@ -81,15 +91,16 @@ func state_started(prev_state: State) -> void:
 func state_paused(next_state: State) -> void:
 	_running = false
 
+
 # Called by the state machine when this state leaves the stack of states. The
 # superclass implementation must be called from subclasses in order for activity
 # management to work correctly.
 func state_deactivated() -> void:
 	_active = false
 	
+	self.visible = false
 	set_process(false)
 	set_physics_process(false)
-	self.visible = false
 
 
 ####################################################################################
@@ -129,9 +140,23 @@ func transition_pop_to_root() -> void:
 func get_state_id() -> String:
 	return state_id
 
+
+# Returns whether the state machine should yield on pause. See class docs for
+# details.
+func get_yield_on_pause() -> bool:
+	return _yield_on_pause
+
+
+# Sets whether the state machine should yield on pause. See class docs for
+# details.
+func set_yield_on_pause(yop: bool) -> void:
+	_yield_on_pause = yop
+
+
 # Returns whether the state is currently active or not.
 func is_active() -> bool:
 	return _active
+
 
 # Returns whether the state is currently running or not.
 func is_running() -> bool:
