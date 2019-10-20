@@ -12,7 +12,7 @@
 [ext_resource path="res://screens/Menu/MenuMain.tscn" type="PackedScene" id=10]
 [ext_resource path="res://screens/Menu/MenuSettings.tscn" type="PackedScene" id=11]
 [ext_resource path="res://screens/Game/GameIntro.tscn" type="PackedScene" id=12]
-[ext_resource path="res://lib/State.gd" type="Script" id=13]
+[ext_resource path="res://screens/Game/Game.tscn" type="PackedScene" id=13]
 [ext_resource path="res://screens/Menu/MenuPause.tscn" type="PackedScene" id=14]
 
 [node name="Main" type="Node2D"]
@@ -106,9 +106,8 @@ state_id = "menu_settings"
 visible = false
 state_id = "game_intro"
 
-[node name="Game" type="Node2D" parent="StateMachine"]
+[node name="Game" parent="StateMachine" instance=ExtResource( 13 )]
 visible = false
-script = ExtResource( 13 )
 state_id = "game"
 
 [node name="MenuPause" parent="StateMachine" instance=ExtResource( 14 )]

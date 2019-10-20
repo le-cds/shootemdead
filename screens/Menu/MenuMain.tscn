@@ -18,7 +18,7 @@ tracks/0/keys = {
 "values": [ Vector2( 646, 200 ), Vector2( 415, 200 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "fade"
 length = 0.5
 tracks/0/type = "value"
@@ -86,7 +86,7 @@ valign = 2
 anims/fade = SubResource( 1 )
 
 [node name="MiscAnimator" type="AnimationPlayer" parent="."]
-anims/fade = SubResource( 3 )
+anims/fade = SubResource( 2 )
 [connection signal="pressed" from="ButtonContainer/ButtonPlay" to="." method="_on_ButtonPlay_pressed"]
 [connection signal="pressed" from="ButtonContainer/ButtonSettings" to="." method="_on_ButtonSettings_pressed"]
 [connection signal="pressed" from="ButtonContainer/ButtonExit" to="." method="_on_ButtonExit_pressed"]
