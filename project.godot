@@ -41,9 +41,9 @@ config/version="0.1.0"
 
 [autoload]
 
-Constants="*res://lib/Constants.gd"
-Settings="*res://lib/Settings.gd"
-ScrollSpeedController="*res://lib/ScrollSpeedController.gd"
+Constants="*res://scripts/Constants.gd"
+Settings="*res://scripts/Settings.gd"
+ScrollSpeedController="*res://scripts/ScrollSpeedController.gd"
 
 [debug]
 
