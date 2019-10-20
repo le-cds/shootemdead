@@ -25,7 +25,7 @@ func state_started(prev_state: State) -> void:
 # Slows the background down to 0. Called by AnimationPlayer.
 func _slow_down() -> void:
 	tween.interpolate_method(
-		$"/root/Main",
+		ScrollSpeedController,
 		"set_base_speed",
 		Constants.BASE_SPEED_MENU,
 		0,
@@ -38,7 +38,7 @@ func _slow_down() -> void:
 # Speeds up the background to game speed. Called by AnimationPlayer.
 func _speed_up() -> void:
 	tween.interpolate_method(
-		$"/root/Main",
+		ScrollSpeedController,
 		"set_base_speed",
 		0,
 		Constants.BASE_SPEED_GAME,

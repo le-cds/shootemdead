@@ -43,6 +43,7 @@ config/version="0.1.0"
 
 Constants="*res://lib/Constants.gd"
 Settings="*res://lib/Settings.gd"
+ScrollSpeedController="*res://lib/ScrollSpeedController.gd"
 
 [debug]
 

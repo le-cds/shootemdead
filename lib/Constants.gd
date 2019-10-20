@@ -2,6 +2,8 @@ extends Node
 
 # The group all menu scenes are in.
 const GROUP_MENUS := "menus"
+# The gorup all EndlessSidescrollers are in
+const GROUP_SIDESCROLLERS := "sidescrollers"
 
 # State IDs of our state machine states
 const STATE_EXIT := ""
