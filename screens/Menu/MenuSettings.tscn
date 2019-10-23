@@ -109,6 +109,7 @@ margin_right = 238.0
 margin_bottom = 271.0
 rect_min_size = Vector2( 0, 30 )
 text = "BACK_BUTTON"
+align = 0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/fade = SubResource( 2 )
