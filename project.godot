@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "Building",
+"language": "GDScript",
+"path": "res://assets/Buildings/Building.gd"
+}, {
+"base": "Node2D",
 "class": "EndlessSidescroller",
 "language": "GDScript",
 "path": "res://lib/EndlessSidescroller.gd"
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://lib/StateMachine.gd"
 } ]
 _global_script_class_icons={
+"Building": "",
 "EndlessSidescroller": "",
 "ProgressTiles": "",
 "State": "",

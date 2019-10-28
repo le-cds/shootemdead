@@ -5,8 +5,8 @@ extends TextureRect
 func _ready():
 	var texture_size: Vector2 = texture.get_size()
 	
-	var x_scale = randi() % 6 + 1
-	var y_scale = randi() % 8 + 1
+	var x_scale = randi() % 5 + 2
+	var y_scale = randi() % 7 + 2
 	
 	rect_size.x = x_scale * texture_size.x
 	rect_size.y = y_scale * texture_size.y
