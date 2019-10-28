@@ -5,11 +5,22 @@ extends Node2D
 class_name Building
 
 
-func get_position() -> Vector2:
+# Returns the position of the building's top left corner.
+func get_building_position() -> Vector2:
 	return Vector2(0, 0)
 
-func set_position(pos: Vector2) -> void:
+
+# Sets the position of the building's top left corner.
+func set_building_position(pos: Vector2) -> void:
 	pass
 
-func get_size() -> Vector2:
+
+# Returns the building's size. This is the building itself, without any enemies.
+func get_building_size() -> Vector2:
+	return Vector2(0, 0)
+
+
+# Returns a position where an enemy can be spawned. The position will end up
+# being the enemy's bottom left corner.
+func random_enemy_position() -> Vector2:
 	return Vector2(0, 0)

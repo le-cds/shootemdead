@@ -216,7 +216,7 @@ func _despawn(scene: CanvasItem):
 
 # Checks wether the scene's root object is one we can work with.
 func _is_supported_scene(scene: Object) -> bool:
-	return scene is Control or scene is Sprite
+	return scene is Building or scene is Control or scene is Sprite
 
 
 ####################################################################################
@@ -240,7 +240,12 @@ func _move(scene: CanvasItem, distance: float) -> void:
 func _get_position(scene: CanvasItem) -> Vector2:
 	assert(_is_supported_scene(scene))
 	
-	if scene is Control:
+	if scene is Building:
+		var building: Building = scene as Building
+		var pos: Vector2 = building.get_building_position()
+		return Vector2(pos.x, pos.y)
+		
+	elif scene is Control:
 		var control: Control = scene as Control
 		var pos: Vector2 = control.rect_position
 		return Vector2(pos.x, pos.y)
@@ -260,7 +265,11 @@ func _get_position(scene: CanvasItem) -> Vector2:
 func _set_position(scene: CanvasItem, new_pos: Vector2) -> void:
 	assert(_is_supported_scene(scene))
 	
-	if scene is Control:
+	if scene is Building:
+		var building: Building = scene as Building
+		building.set_building_position(new_pos)
+	
+	elif scene is Control:
 		var control: Control = scene as Control
 		control.rect_position.x = new_pos.x
 		control.rect_position.y = new_pos.y
@@ -277,7 +286,11 @@ func _set_position(scene: CanvasItem, new_pos: Vector2) -> void:
 func _get_size(scene: CanvasItem) -> Vector2:
 	assert(_is_supported_scene(scene))
 	
-	if scene is Control:
+	if scene is Building:
+		var building: Building = scene as Building
+		return building.get_building_size()
+	
+	elif scene is Control:
 		var control: Control = scene as Control
 		return control.rect_size
 		

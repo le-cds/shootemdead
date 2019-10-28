@@ -21,3 +21,6 @@ const SOUND_BUS := "Sounds"
 const BASE_SPEED_MENU := 15
 # Base speed of EndlessSidescrollers while in the game.
 const BASE_SPEED_GAME := 30
+
+# The maximum width of our enemies. Used to compute the width of enemy spawn zones.
+const MAX_ENEMY_WIDTH := 10
