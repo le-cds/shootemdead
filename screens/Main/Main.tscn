@@ -6,8 +6,8 @@
 [ext_resource path="res://assets/Clouds/Far/CloudsFar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/Clouds/Med/CloudsMed.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/Clouds/Near/CloudsNear.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/Buildings/HighRiser/HighRiser.tscn" type="PackedScene" id=7]
-[ext_resource path="res://assets/Street/Street.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/Street/Street.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/Buildings/HighRiser/HighRiser.tscn" type="PackedScene" id=8]
 [ext_resource path="res://lib/StateMachine.gd" type="Script" id=9]
 [ext_resource path="res://screens/Menu/MenuMain.tscn" type="PackedScene" id=10]
 [ext_resource path="res://screens/Menu/MenuSettings.tscn" type="PackedScene" id=11]
@@ -63,25 +63,25 @@ running = true
 
 [node name="Foreground" type="Node2D" parent="."]
 
-[node name="Buildings" type="Node2D" parent="Foreground" groups=[
-"sidescrollers",
-]]
-position = Vector2( 0, 316 )
-script = ExtResource( 3 )
-scenes = [ ExtResource( 7 ) ]
-sidescroller_width = 640
-distance = 20
-pre_spawn = true
-running = true
-
 [node name="Street" type="Node2D" parent="Foreground" groups=[
 "sidescrollers",
 ]]
 position = Vector2( 0, 360 )
 script = ExtResource( 3 )
-scenes = [ ExtResource( 8 ) ]
+scenes = [ ExtResource( 7 ) ]
 sidescroller_width = 640
 distance = 0
+pre_spawn = true
+running = true
+
+[node name="Buildings" type="Node2D" parent="Foreground" groups=[
+"sidescrollers",
+]]
+position = Vector2( 0, 316 )
+script = ExtResource( 3 )
+scenes = [ ExtResource( 8 ) ]
+sidescroller_width = 640
+distance = 20
 pre_spawn = true
 running = true
 
