@@ -115,5 +115,3 @@ align = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Intro = SubResource( 1 )
-
-[node name="Tween" type="Tween" parent="."]

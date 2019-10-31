@@ -5,7 +5,6 @@ extends State
 # Scene Objects
 
 onready var animator: AnimationPlayer = $AnimationPlayer
-onready var tween: Tween = $Tween
 
 
 ####################################################################################
@@ -24,28 +23,12 @@ func state_started(prev_state: State) -> void:
 
 # Slows the background down to 0. Called by AnimationPlayer.
 func _slow_down() -> void:
-	tween.interpolate_method(
-		ScrollSpeedController,
-		"set_base_speed",
-		Constants.BASE_SPEED_MENU,
-		0,
-		1,
-		Tween.TRANS_LINEAR,
-		Tween.EASE_IN)
-	tween.start()
+	ScrollSpeedController.interpolate_base_speed(0, 1)
 
 
 # Speeds up the background to game speed. Called by AnimationPlayer.
 func _speed_up() -> void:
-	tween.interpolate_method(
-		ScrollSpeedController,
-		"set_base_speed",
-		0,
-		Constants.BASE_SPEED_GAME,
-		1,
-		Tween.TRANS_LINEAR,
-		Tween.EASE_IN)
-	tween.start()
+	ScrollSpeedController.interpolate_base_speed(Constants.BASE_SPEED_GAME, 1)
 
 
 # Starts the actual game. Called by AnimationPlayer.
