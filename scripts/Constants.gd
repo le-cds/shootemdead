@@ -1,9 +1,9 @@
 extends Node
 
-# The group all menu scenes are in.
+# Group names for different groups of nodes.
 const GROUP_MENUS := "menus"
-# The gorup all EndlessSidescrollers are in
 const GROUP_SIDESCROLLERS := "sidescrollers"
+const GROUP_ENEMIES := "enemies"
 
 # State IDs of our state machine states
 const STATE_EXIT := ""
@@ -20,7 +20,7 @@ const SOUND_BUS := "Sounds"
 # Base speed of EndlessSidescrollers while in the menu.
 const BASE_SPEED_MENU := 15
 # Base speed of EndlessSidescrollers while in the game.
-const BASE_SPEED_GAME := 30
+const BASE_SPEED_GAME := 50
 
 # The maximum width of our enemies. Used to compute the width of enemy spawn zones.
 const MAX_ENEMY_WIDTH := 10

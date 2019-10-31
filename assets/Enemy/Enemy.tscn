@@ -8,4 +8,5 @@ script = ExtResource( 1 )
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 24.0
 margin_bottom = 42.0
+color = Color( 0.168627, 0.952941, 0.74902, 1 )
 [connection signal="gui_input" from="ColorRect" to="." method="_on_ColorRect_gui_input"]

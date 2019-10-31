@@ -15,12 +15,14 @@ const MAX_BOMB_PROGRESS := 20
 onready var _hud: HUD = $HUD
 
 
-# Current score
-var _score := 0
-# Number of lifes left
-var _lifes := MAX_LIFES
-# Progress to the next bomb
-var _bomb_progress := 0
+# Current score.
+var _score: int
+# Number of lifes left.
+var _lifes: int
+# Progress to the next bomb.
+var _bomb_progress: int
+# Speed at which the world is moving.
+var _game_speed: int
 
 
 ####################################################################################
@@ -43,10 +45,6 @@ func _notification(what) -> void:
 		_pause()
 
 
-func _pause() -> void:
-	transition_push(Constants.STATE_MENU_PAUSE)
-
-
 ####################################################################################
 # State Lifecycle
 
@@ -57,8 +55,23 @@ func state_started(prev_state: State) -> void:
 	_score = 0
 	_lifes = MAX_LIFES
 	_bomb_progress = 0
+	_game_speed = Constants.BASE_SPEED_GAME
 	
 	_update_hud()
+
+
+####################################################################################
+# Game State Handling
+
+# Pauses the game.
+func _pause() -> void:
+	transition_push(Constants.STATE_MENU_PAUSE)
+
+
+# Game over!
+func _game_over() -> void:
+	# TODO There should be more here
+	transition_pop_to_root()
 
 
 ####################################################################################
@@ -88,9 +101,14 @@ func _init_enemy(building: Building, enemy: Enemy) -> void:
 func _enemy_left(enemy: Enemy, survived: bool) -> void:
 	if survived:
 		_lifes -= 1
+		if _lifes == 0:
+			_game_over()
 	else:
 		_bomb_progress += 1
-		_score += 1
+		_score += 1000
+		_game_speed += 4
+		
+		ScrollSpeedController.interpolate_base_speed(_game_speed, 5)
 	
 	_update_hud()
 

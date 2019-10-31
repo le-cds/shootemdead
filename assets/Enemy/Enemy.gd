@@ -36,8 +36,9 @@ func _survive() -> void:
 
 # Tells listeners that this enemy has died, triggers any death animations and
 # removes it from the scene.
-func _die() -> void:
-	emit_signal("enemy_left", self, false)
+func die(signal_listeners: bool) -> void:
+	if (signal_listeners):
+		emit_signal("enemy_left", self, false)
 	self.queue_free()
 
 
@@ -55,4 +56,4 @@ func set_spawn_location(location: Vector2) -> void:
 
 func _on_ColorRect_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-		_die()
+		die(true)
