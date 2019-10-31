@@ -19,6 +19,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://lib/EndlessSidescroller.gd"
 }, {
+"base": "Node2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://assets/Enemy/Enemy.gd"
+}, {
+"base": "Node2D",
+"class": "HUD",
+"language": "GDScript",
+"path": "res://screens/Game/HUD.gd"
+}, {
 "base": "Control",
 "class": "ProgressTiles",
 "language": "GDScript",
