@@ -18,6 +18,7 @@ signal enemy_left(enemy, survived)
 
 onready var _rect: ColorRect = $Visuals/ColorRect
 onready var _animation_player: AnimationPlayer = $AnimationPlayer
+onready var _blood_splatter: Particles2D = $BloodSplatter
 
 
 ####################################################################################
@@ -26,12 +27,19 @@ onready var _animation_player: AnimationPlayer = $AnimationPlayer
 func _process(delta) -> void:
 	var global_pos: Vector2 = _rect.rect_global_position
 	if global_pos.x + _rect.rect_size.x < 0:
-		_survive()
+		survive(true, false)
 
 
-# Tells listeners that this enemy has survived and removes it from the scene.
-func _survive() -> void:
-	emit_signal("enemy_left", self, true)
+# Tells listeners that this enemy has survived, optionally triggers animations and
+# removes it from the scene.
+func survive(signal_listeners: bool, play_animation: bool) -> void:
+	if signal_listeners:
+		emit_signal("enemy_left", self, true)
+	
+	if play_animation:
+		_animation_player.play("Hide")
+		yield(_animation_player, "animation_finished")
+	
 	self.queue_free()
 
 
@@ -41,9 +49,11 @@ func die(signal_listeners: bool) -> void:
 	if (signal_listeners):
 		emit_signal("enemy_left", self, false)
 	
-	_animation_player.play("Die")
+	# Trigger effects
+	_animation_player.play("Hide")
+	_blood_splatter.emitting = true
 	
-	# This must be triggered only once blood splatter and animations are over
+	# The animation is long enough to allow the particle emitter to finish
 	yield(_animation_player, "animation_finished")
 	self.queue_free()
 
@@ -62,4 +72,7 @@ func set_spawn_location(location: Vector2) -> void:
 
 func _on_ColorRect_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		# Place the blood splatter origin at hit point
+		_blood_splatter.set_global_position(get_viewport().get_mouse_position())
+		
 		die(true)
