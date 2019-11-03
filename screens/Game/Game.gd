@@ -48,8 +48,8 @@ func _notification(what) -> void:
 ####################################################################################
 # State Lifecycle
 
-func state_started(prev_state: State) -> void:
-	.state_started(prev_state)
+func state_activated() -> void:
+	.state_activated()
 	
 	# Reset our state and update the HUD
 	_score = 0
@@ -57,7 +57,19 @@ func state_started(prev_state: State) -> void:
 	_bomb_progress = 0
 	_game_speed = Constants.BASE_SPEED_GAME
 	
+	# Applying the game speed is only necessary during development, where we may
+	# skip the game intro which usually takes care of this
+	ScrollSpeedController.set_base_speed(_game_speed)
+	
 	_update_hud()
+
+
+func state_deactivated() -> void:
+	.state_deactivated()
+	
+	# Remove all enemies
+	for enemy in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
+		(enemy as Enemy).survive(false, true)
 
 
 ####################################################################################
