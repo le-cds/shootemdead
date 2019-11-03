@@ -16,7 +16,8 @@ signal enemy_left(enemy, survived)
 ####################################################################################
 # Scene Objects
 
-onready var _rect: ColorRect = $ColorRect
+onready var _rect: ColorRect = $Visuals/ColorRect
+onready var _animation_player: AnimationPlayer = $AnimationPlayer
 
 
 ####################################################################################
@@ -39,6 +40,11 @@ func _survive() -> void:
 func die(signal_listeners: bool) -> void:
 	if (signal_listeners):
 		emit_signal("enemy_left", self, false)
+	
+	_animation_player.play("Die")
+	
+	# This must be triggered only once blood splatter and animations are over
+	yield(_animation_player, "animation_finished")
 	self.queue_free()
 
 
