@@ -14,6 +14,9 @@ onready var _state_game: State = $StateMachine/Game
 # Lifecycle
 
 func _ready() -> void:
+	# Initialize randomizer
+	randomize()
+	
 	# Register event listeners
 	_state_machine.connect("state_changed", self, "_state_changed")
 	_state_menu_main.connect("start_new_game", self, "_start_new_game")
