@@ -7,3 +7,4 @@
 script = ExtResource( 1 )
 
 [node name="HUD" parent="." instance=ExtResource( 2 )]
+[connection signal="bomb_requested" from="HUD" to="." method="_on_HUD_bomb_requested"]

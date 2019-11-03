@@ -126,9 +126,36 @@ func _enemy_left(enemy: Enemy, survived: bool) -> void:
 
 
 ####################################################################################
+# Bomb Handling
+
+# Throws and explodes a bomb, if possible.
+func _throw_bomb() -> void:
+	#if _bomb_progress >= MAX_BOMB_PROGRESS:
+		# Kill all enemies, but don't notify us -- we'll update the score and things
+		# ourselves here
+		var enemies := 0
+		for object in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
+			var enemy: Enemy = object as Enemy
+			if enemy.is_alive():
+				enemies += 1
+				enemy.die(false)
+		
+		if enemies > 0:
+			# Update stats
+			_score += enemies * 1000 + 2000
+			_bomb_progress = 0
+			
+			_update_hud()
+
+
+####################################################################################
 # HUD Handling
 
 func _update_hud() -> void:
 	_hud.set_score(_score)
 	_hud.set_lifes(_lifes)
 	_hud.set_bomb_progress(_bomb_progress)
+
+
+func _on_HUD_bomb_requested():
+	_throw_bomb()

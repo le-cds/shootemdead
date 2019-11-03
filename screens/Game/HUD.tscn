@@ -73,3 +73,4 @@ margin_right = 155.0
 margin_bottom = 46.0
 custom_fonts/font = SubResource( 1 )
 text = "0"
+[connection signal="gui_input" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/BombIcon" to="." method="_on_BombIcon_gui_input"]

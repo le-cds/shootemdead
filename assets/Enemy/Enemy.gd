@@ -19,6 +19,14 @@ signal enemy_left(enemy, survived)
 onready var _rect: ColorRect = $Visuals/ColorRect
 onready var _animation_player: AnimationPlayer = $AnimationPlayer
 onready var _blood_splatter: Particles2D = $BloodSplatter
+onready var _visibiliy_notifier: VisibilityNotifier2D = $VisibilityNotifier2D
+
+
+####################################################################################
+# State
+
+# Whether the enemy is still alive.
+var _alive := true
 
 
 ####################################################################################
@@ -46,6 +54,8 @@ func survive(signal_listeners: bool, play_animation: bool) -> void:
 # Tells listeners that this enemy has died, triggers any death animations and
 # removes it from the scene.
 func die(signal_listeners: bool) -> void:
+	_alive = false
+	
 	if (signal_listeners):
 		emit_signal("enemy_left", self, false)
 	
@@ -65,6 +75,11 @@ func set_spawn_location(location: Vector2) -> void:
 	set_position(Vector2(
 		location.x,
 		location.y - _rect.rect_size.y))
+
+
+# Whether the enemy is still alive.
+func is_alive() -> bool:
+	return _alive
 
 
 ####################################################################################

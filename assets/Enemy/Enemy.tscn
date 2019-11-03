@@ -2,14 +2,14 @@
 
 [ext_resource path="res://assets/Enemy/Enemy.gd" type="Script" id=1]
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.859259, 0.992593 )
 colors = PoolColorArray( 0.686275, 0, 0, 1, 0.686275, 0, 0, 1, 0.686275, 0, 0, 0 )
 
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=1]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 1
 emission_sphere_radius = 5.0
 flag_disable_z = true
@@ -17,15 +17,15 @@ spread = 35.0
 gravity = Vector3( 0, 450, 0 )
 initial_velocity = 140.0
 initial_velocity_random = 0.5
+angular_velocity = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 360.0
 angle_random = 1.0
 scale = 5.0
-color_ramp = SubResource( 4 )
+color_ramp = SubResource( 2 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "Hide"
+[sub_resource type="Animation" id=4]
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Visuals:modulate")
@@ -62,8 +62,11 @@ lifetime = 1.5
 one_shot = true
 explosiveness = 0.95
 local_coords = false
-process_material = SubResource( 1 )
+process_material = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Hide = SubResource( 2 )
+anims/Hide = SubResource( 4 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+rect = Rect2( 0, 0, 24, 42 )
 [connection signal="gui_input" from="Visuals/ColorRect" to="." method="_on_ColorRect_gui_input"]

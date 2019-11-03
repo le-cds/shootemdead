@@ -4,6 +4,13 @@ class_name HUD
 
 
 ####################################################################################
+# Signals
+
+# Emitted whenever the user presses the bomb icon.
+signal bomb_requested()
+
+
+####################################################################################
 # Scene Objects
 
 onready var life_bar: ProgressTiles = $MarginContainer/HBoxContainer/VBoxContainer/LifeBar
@@ -40,3 +47,11 @@ func set_score(score: int) -> void:
 		insert_index -= 3
 	
 	score_label.text = score_str
+
+
+####################################################################################
+# Events
+
+func _on_BombIcon_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		emit_signal("bomb_requested")
