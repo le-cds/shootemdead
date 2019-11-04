@@ -64,6 +64,9 @@ export var spawn_group := ""
 # Whether this is actually running at the moment.
 export var running := false
 
+# Distance a scene has to be offscreen before becoming eligible for removal.
+export (int, 0, 100) var despawn_distance := 20
+
 
 ####################################################################################
 # State
@@ -122,7 +125,7 @@ func _physics_process(delta) -> void:
 			# Check if the first child has to be removed
 			if get_child_count() > 0:
 				var leftmost_child = get_child(0)
-				if _get_right_border_x(leftmost_child) < 0:
+				if _get_right_border_x(leftmost_child) < -despawn_distance:
 					_despawn(leftmost_child)
 			
 		# Check if it's time to spawn the next scene
