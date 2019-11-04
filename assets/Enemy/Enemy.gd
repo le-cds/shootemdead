@@ -80,6 +80,13 @@ func set_spawn_location(location: Vector2) -> void:
 		location.y - _rect.rect_size.y))
 
 
+# Returns the top center point of this enemy as a global position. Can be used to
+# spawn score multipliers above the enemy.
+func get_top_center() -> Vector2:
+	var global_rect = _rect.rect_global_position
+	return Vector2(global_rect.x + _rect.rect_size.x / 2, global_rect.y)
+
+
 # Whether the enemy is still alive.
 func is_alive() -> bool:
 	return _alive

@@ -18,6 +18,9 @@ const BASE_SCORE_PER_ENEMY := 1000
 const GAME_SPEED_INCREMENT := 4
 
 
+var score_multiplier_scene = preload("res://screens/Game/ScoreMultiplier.tscn")
+
+
 onready var _hud: HUD = $HUD
 onready var _animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -147,6 +150,8 @@ func _enemy_left(enemy: Enemy, survived: bool) -> void:
 		_game_speed += GAME_SPEED_INCREMENT
 		
 		ScrollSpeedController.interpolate_base_speed(_game_speed, 5)
+		
+		_show_score_multiplier(enemy, _score_multiplier)
 	
 	_update_hud()
 
@@ -163,6 +168,13 @@ func _update_score_multiplier(enemy: Enemy) -> void:
 	_last_killed_enemy_id = enemy.id
 
 
+# Shows a score multiplier above the given enemy.
+func _show_score_multiplier(enemy: Enemy, multiplier: int) -> void:
+	var scene = score_multiplier_scene.instance()
+	self.add_child(scene)
+	scene.animate(multiplier, enemy.get_top_center())
+
+
 ####################################################################################
 # Bomb Handling
 
@@ -175,10 +187,11 @@ func _throw_bomb() -> void:
 		for object in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
 			var enemy: Enemy = object as Enemy
 			if enemy.is_alive() and enemy.is_on_screen():
-				# TODO Do something with player IDs
+				# TODO Do something with player IDs and the score multiplier
 				
 				enemies += 1
 				enemy.die(false)
+				_show_score_multiplier(enemy, _score_multiplier)
 		
 		if enemies > 0:
 			# Update stats
