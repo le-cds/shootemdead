@@ -24,6 +24,8 @@ angle = 360.0
 angle_random = 1.0
 scale = 5.0
 color_ramp = SubResource( 2 )
+hue_variation = 0.11
+hue_variation_random = 1.0
 
 [sub_resource type="Animation" id=4]
 length = 2.0
