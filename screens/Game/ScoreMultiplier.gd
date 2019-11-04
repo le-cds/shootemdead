@@ -20,8 +20,8 @@ func animate(multiplier: int, start: Vector2) -> void:
 	# between animation players. See Godot issue #30197. (This could be done by
 	# loading an animation resource and modifying that, but I only discovered that
 	# after writing this code, and it's not that much faster I guess...)
-	print(_animation_player.add_animation("Fade", _create_animation(
-		Vector2(start.x - _label.rect_size.x / 2, start.y - _label.rect_size.y))))
+	_animation_player.add_animation("Fade", _create_animation(
+		Vector2(start.x - _label.rect_size.x / 2, start.y - _label.rect_size.y)))
 	_animation_player.play("Fade")
 	
 	yield(_animation_player, "animation_finished")

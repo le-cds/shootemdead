@@ -180,23 +180,37 @@ func _show_score_multiplier(enemy: Enemy, multiplier: int) -> void:
 
 # Throws and explodes a bomb, if possible.
 func _throw_bomb() -> void:
-	if _bomb_progress >= MAX_BOMB_PROGRESS:
-		# Kill all enemies, but don't notify us -- we'll update the score and things
-		# ourselves here
-		var enemies := 0
+	#if _bomb_progress >= MAX_BOMB_PROGRESS:
+		
+		# Gather all enemies and find their min and max ID (important for the score
+		# multiplier)
+		var min_enemy_id := _next_enemy_id
+		var max_enemy_id := 0
+		var enemies = []
 		for object in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
 			var enemy: Enemy = object as Enemy
 			if enemy.is_alive() and enemy.is_on_screen():
-				# TODO Do something with player IDs and the score multiplier
-				
-				enemies += 1
-				enemy.die(false)
-				_show_score_multiplier(enemy, _score_multiplier)
+				min_enemy_id = min(min_enemy_id, enemy.id)
+				max_enemy_id = max(max_enemy_id, enemy.id)
+				enemies.append(enemy)
 		
-		if enemies > 0:
-			# Update stats
-			_score += enemies * _score_multiplier
+		if not enemies.empty():
+			# Reset the score multiplier if the player skipped an enemy
+			if min_enemy_id > _last_killed_enemy_id + 1:
+				_score_multiplier = 0
+			_last_killed_enemy_id = max_enemy_id
+			
+			_score_multiplier += enemies.size()
+			
+			# Update our stats
+			_score += enemies.size() * BASE_SCORE_PER_ENEMY * _score_multiplier
 			_bomb_progress = 0
+			
+			# Kill all enemies, but don't notify us -- we'll update the score and things
+			# ourselves here. Also, show multipliers
+			for enemy in enemies:
+				_show_score_multiplier(enemy, _score_multiplier)
+				enemy.die(false)
 			
 			$AnimationPlayer.play("BombExplosion")
 			
