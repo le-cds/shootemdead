@@ -19,6 +19,7 @@ const GAME_SPEED_INCREMENT := 4
 
 
 onready var _hud: HUD = $HUD
+onready var _animation_player: AnimationPlayer = $AnimationPlayer
 
 
 # Current score.
@@ -79,6 +80,7 @@ func state_activated() -> void:
 	ScrollSpeedController.set_base_speed(_game_speed)
 	
 	_update_hud()
+	_animation_player.play("FadeHUD")
 
 
 func state_deactivated() -> void:
@@ -99,7 +101,9 @@ func _pause() -> void:
 
 # Game over!
 func _game_over() -> void:
-	# TODO There should be more here
+	_animation_player.play_backwards("FadeHUD")
+	yield(_animation_player, "animation_finished")
+	
 	transition_pop_to_root()
 
 
@@ -171,13 +175,17 @@ func _throw_bomb() -> void:
 		for object in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
 			var enemy: Enemy = object as Enemy
 			if enemy.is_alive() and enemy.is_on_screen():
+				# TODO Do something with player IDs
+				
 				enemies += 1
 				enemy.die(false)
 		
 		if enemies > 0:
 			# Update stats
-			_score += enemies * 1000 + 2000
+			_score += enemies * _score_multiplier
 			_bomb_progress = 0
+			
+			$AnimationPlayer.play("BombExplosion")
 			
 			_update_hud()
 
