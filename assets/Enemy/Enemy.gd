@@ -82,6 +82,12 @@ func is_alive() -> bool:
 	return _alive
 
 
+# Whether the enemy (or at least parts of the enemy) are currently visible.
+func is_on_screen() -> bool:
+	var enemy_global_rect = _rect.get_global_rect()
+	return enemy_global_rect.position.x < get_viewport().size.x and enemy_global_rect.end.x > 0
+
+
 ####################################################################################
 # Event Handling
 

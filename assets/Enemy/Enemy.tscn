@@ -66,7 +66,4 @@ process_material = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Hide = SubResource( 4 )
-
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-rect = Rect2( 0, 0, 24, 42 )
 [connection signal="gui_input" from="Visuals/ColorRect" to="." method="_on_ColorRect_gui_input"]

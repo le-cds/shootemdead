@@ -130,13 +130,13 @@ func _enemy_left(enemy: Enemy, survived: bool) -> void:
 
 # Throws and explodes a bomb, if possible.
 func _throw_bomb() -> void:
-	#if _bomb_progress >= MAX_BOMB_PROGRESS:
+	if _bomb_progress >= MAX_BOMB_PROGRESS:
 		# Kill all enemies, but don't notify us -- we'll update the score and things
 		# ourselves here
 		var enemies := 0
 		for object in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
 			var enemy: Enemy = object as Enemy
-			if enemy.is_alive():
+			if enemy.is_alive() and enemy.is_on_screen():
 				enemies += 1
 				enemy.die(false)
 		
