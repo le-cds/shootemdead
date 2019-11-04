@@ -8,8 +8,14 @@ extends State
 const ENEMY_SCENE: PackedScene = preload("res://assets/Enemy/Enemy.tscn")
 # Maximum number of lifes.
 const MAX_LIFES := 5
-# Number of enemies to kill until we get a free bomb
+# Bomb progress killing an enemy will earn.
+const BOMB_PROGRESS := 1
+# Number of enemies to kill until we get a free bomb.
 const MAX_BOMB_PROGRESS := 20
+# Score without multiplier that killing an enemy earns the player.
+const BASE_SCORE_PER_ENEMY := 1000
+# Game speed increase killing an enemy will yield.
+const GAME_SPEED_INCREMENT := 4
 
 
 onready var _hud: HUD = $HUD
@@ -23,6 +29,13 @@ var _lifes: int
 var _bomb_progress: int
 # Speed at which the world is moving.
 var _game_speed: int
+
+# ID we'll give to the next enemy to spawn
+var _next_enemy_id: int
+# ID of the most recent enemy that was killed.
+var _last_killed_enemy_id: int
+# The current score multiplier, as determined by how many enemies we killed in a row.
+var _score_multiplier: int
 
 
 ####################################################################################
@@ -56,6 +69,10 @@ func state_activated() -> void:
 	_lifes = MAX_LIFES
 	_bomb_progress = 0
 	_game_speed = Constants.BASE_SPEED_GAME
+	
+	_next_enemy_id = 1
+	_last_killed_enemy_id = -1
+	_score_multiplier = 0
 	
 	# Applying the game speed is only necessary during development, where we may
 	# skip the game intro which usually takes care of this
@@ -104,6 +121,9 @@ func _building_spawned(scene: Node) -> void:
 
 # Finishes the enemy spawning process.
 func _init_enemy(building: Building, enemy: Enemy) -> void:
+	enemy.id = _next_enemy_id
+	_next_enemy_id += 1
+	
 	enemy.set_spawn_location(building.random_enemy_position())
 	enemy.connect("enemy_left", self, "_enemy_left", [], CONNECT_ONESHOT)
 
@@ -116,13 +136,27 @@ func _enemy_left(enemy: Enemy, survived: bool) -> void:
 		if _lifes == 0:
 			_game_over()
 	else:
-		_bomb_progress += 1
-		_score += 1000
-		_game_speed += 4
+		_update_score_multiplier(enemy)
+		
+		_bomb_progress += BOMB_PROGRESS
+		_score += BASE_SCORE_PER_ENEMY * _score_multiplier
+		_game_speed += GAME_SPEED_INCREMENT
 		
 		ScrollSpeedController.interpolate_base_speed(_game_speed, 5)
 	
 	_update_hud()
+
+
+# Updates the score multiplier after the given enemy was killed. The idea is that
+# killing enemies with consecutive IDs increases the score multiplier by one.
+# Killing one out of order resets the multiplier.
+func _update_score_multiplier(enemy: Enemy) -> void:
+	if enemy.id == _last_killed_enemy_id + 1:
+		_score_multiplier += 1
+	else:
+		_score_multiplier = 1
+	
+	_last_killed_enemy_id = enemy.id
 
 
 ####################################################################################

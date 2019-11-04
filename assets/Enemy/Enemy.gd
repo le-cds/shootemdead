@@ -25,6 +25,9 @@ onready var _visibiliy_notifier: VisibilityNotifier2D = $VisibilityNotifier2D
 ####################################################################################
 # State
 
+# The enemy's ID. Used by the game for scoring multiplier purposes.
+var id := 0
+
 # Whether the enemy is still alive.
 var _alive := true
 
@@ -34,7 +37,7 @@ var _alive := true
 
 func _process(delta) -> void:
 	var global_pos: Vector2 = _rect.rect_global_position
-	if global_pos.x + _rect.rect_size.x < 0:
+	if _alive and global_pos.x + _rect.rect_size.x < 0:
 		survive(true, false)
 
 
