@@ -12,6 +12,7 @@ const STATE_MENU_SETTINGS := "menu_settings"
 const STATE_MENU_PAUSE := "menu_pause"
 const STATE_GAME_INTRO := "game_intro"
 const STATE_GAME := "game"
+const STATE_GAME_OVER := "game_over"
 
 # Names of audio busses
 const MUSIC_BUS := "Music"
