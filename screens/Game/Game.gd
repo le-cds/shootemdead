@@ -105,11 +105,10 @@ func _game_over() -> void:
 	_animation_player.play_backwards("FadeHUD")
 	yield(_animation_player, "animation_finished")
 	
-	# TODO Do this properly once the state machine supports parameters
-	var game_over = $"../GameOver"
-	game_over.score = _score
+	_remove_enemies()
 	
-	transition_push(Constants.STATE_GAME_OVER)
+	# Pass the score to the game over screen as a paramter
+	transition_push(Constants.STATE_GAME_OVER, { Constants.STATE_GAME_OVER_SCORE: _score })
 
 
 ####################################################################################

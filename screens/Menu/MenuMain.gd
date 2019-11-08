@@ -37,8 +37,8 @@ func _ready():
 ####################################################################################
 # State Lifecycle
 
-func state_started(prev_state: State) -> void:
-	.state_started(prev_state)
+func state_started(prev_state: State, params: Dictionary) -> void:
+	.state_started(prev_state, params)
 	
 	ScrollSpeedController.interpolate_base_speed(Constants.BASE_SPEED_MENU, 1)
 	

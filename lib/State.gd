@@ -26,11 +26,11 @@ class_name State
 # Signals
 
 # Signals which correspond to the methods in StateMachine
-signal transition_push(state_id)
-signal transition_replace_single(state_id)
-signal transition_replace_all(state_id)
-signal transition_pop()
-signal transition_pop_to_root()
+signal transition_push(state_id, params)
+signal transition_replace_single(state_id, params)
+signal transition_replace_all(state_id, params)
+signal transition_pop(params)
+signal transition_pop_to_root(params)
 
 
 ####################################################################################
@@ -80,8 +80,9 @@ func state_activated() -> void:
 
 # Called when this state becomes the running state. The superclass implementation
 # must be called from subclasses in ordner for activity management to work
-# correctly.
-func state_started(prev_state: State) -> void:
+# correctly. The parameters are a non-null dictionary of parameters passed to
+# this state by whoever caused it to be started again.
+func state_started(prev_state: State, params: Dictionary) -> void:
 	_running = true
 
 
@@ -107,30 +108,30 @@ func state_deactivated() -> void:
 # State Machine Signalling
 
 # Transitions to the given state and pushes it on our state stack.
-func transition_push(state_id: String) -> void:
-	emit_signal("transition_push", state_id)
+func transition_push(state_id: String, params: Dictionary = {}) -> void:
+	emit_signal("transition_push", state_id, params)
 
 
 # Transitions to the given state, replacing the newest stack state only.
-func transition_replace_single(state_id: String) -> void:
-	emit_signal("transition_replace_single", state_id)
+func transition_replace_single(state_id: String, params: Dictionary = {}) -> void:
+	emit_signal("transition_replace_single", state_id, params)
 
 
 # Transitions to the given state, replacing all states on the stack. Calling
 # transition_back(...) from that state won't make sense.
-func transition_replace_all(state_id: String) -> void:
-	emit_signal("transition_replace_all", state_id)
+func transition_replace_all(state_id: String, params: Dictionary = {}) -> void:
+	emit_signal("transition_replace_all", state_id, params)
 
 
 # Removes the current state from the stack and transitions back to the state that
 # preceded it.
-func transition_pop() -> void:
-	emit_signal("transition_pop")
+func transition_pop(params: Dictionary = {}) -> void:
+	emit_signal("transition_pop", params)
 
 
 # Removes all but the lowermost states and transitions back to that state.
-func transition_pop_to_root() -> void:
-	emit_signal("transition_pop_to_root")
+func transition_pop_to_root(params: Dictionary = {}) -> void:
+	emit_signal("transition_pop_to_root", params)
 
 
 ####################################################################################

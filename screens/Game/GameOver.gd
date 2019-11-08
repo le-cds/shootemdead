@@ -9,7 +9,7 @@ onready var _animation_player: AnimationPlayer = $AnimationPlayer
 onready var _tween: Tween = $Tween
 
 # The score to be displayed
-var score: int = 0
+var _score: int = 0
 
 
 ####################################################################################
@@ -23,16 +23,23 @@ func _ready():
 ####################################################################################
 # State Lifecycle
 
-func state_started(prev_state: State) -> void:
-	.state_started(prev_state)
+func state_started(prev_state: State, params: Dictionary) -> void:
+	.state_started(prev_state, params)
 	
+	# Check if a high score was passed to us
+	if params.has(Constants.STATE_GAME_OVER_SCORE):
+		_score = params[Constants.STATE_GAME_OVER_SCORE]
+	else:
+		_score = 0
+	
+	# Start animations
 	_animation_player.play("Fade")
 	
 	_tween.interpolate_method(
 		self,
 		"_update_score_label",
 		0,
-		score,
+		_score,
 		1.5,
 		Tween.TRANS_LINEAR,
 		Tween.EASE_OUT)

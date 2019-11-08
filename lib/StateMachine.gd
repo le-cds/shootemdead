@@ -73,7 +73,7 @@ func get_active_state() -> State:
 
 # Transitions to the given state and pushes it on our state stack. The state must
 # exist.
-func transition_push(state_id: String) -> void:
+func transition_push(state_id: String, params: Dictionary = {}) -> void:
 	var new_state: State = _state_by_id(state_id)
 	if new_state != null:
 		var pause_result = _pause_topmost_state(new_state)
@@ -81,14 +81,14 @@ func transition_push(state_id: String) -> void:
 			yield(pause_result, "completed")
 		
 		_activate_state(new_state)
-		_start_topmost_state(_last_active_state)
+		_start_topmost_state(_last_active_state, params)
 		
 		_update_active_state(new_state)
 
 
 # Transitions to the given state, replacing the newest stack state only. The
 # state must exist.
-func transition_replace_single(state_id: String) -> void:
+func transition_replace_single(state_id: String, params: Dictionary = {}) -> void:
 	var new_state: State = _state_by_id(state_id)
 	if new_state != null:
 		var pause_result = _pause_topmost_state(new_state)
@@ -97,14 +97,14 @@ func transition_replace_single(state_id: String) -> void:
 		
 		_deactivate_topmost_state()
 		_activate_state(new_state)
-		_start_topmost_state(_last_active_state)
+		_start_topmost_state(_last_active_state, params)
 		
 		_update_active_state(new_state)
 
 
 # Transitions to the given state, replacing all states on the stack. Transitioning
 # to NO_STATE will remove all states.
-func transition_replace_all(state_id: String) -> void:
+func transition_replace_all(state_id: String, params: Dictionary = {}) -> void:
 	var new_state: State = _state_by_id(state_id)
 	
 	# Only the topmost state may need to be paused
@@ -119,14 +119,14 @@ func transition_replace_all(state_id: String) -> void:
 	# Activate and start the new state, if any
 	if new_state != null:
 		_activate_state(new_state)
-		_start_topmost_state(_last_active_state)
+		_start_topmost_state(_last_active_state, params)
 	
 	_update_active_state(new_state)
 
 
 # Removes the current state from the stack and transitions back to the state that
 # preceded it.
-func transition_pop() -> void:
+func transition_pop(params: Dictionary = {}) -> void:
 	# Find out which state will be next
 	var new_state: State = null
 	if _state_stack.size() > 1:
@@ -137,13 +137,13 @@ func transition_pop() -> void:
 		yield(pause_result, "completed")
 	
 	_deactivate_topmost_state()
-	_start_topmost_state(_last_active_state)
+	_start_topmost_state(_last_active_state, params)
 	
 	_update_active_state(new_state)
 
 
 # Removes all but the lowermost states and transitions back to that state.
-func transition_pop_to_root() -> void:
+func transition_pop_to_root(params: Dictionary = {}) -> void:
 	# This only makes sense if there is more than the root
 	if _state_stack.size() > 1:
 		var new_state: State = _state_stack[0]
@@ -158,7 +158,7 @@ func transition_pop_to_root() -> void:
 			_deactivate_topmost_state()
 		
 		# Start root
-		_start_topmost_state(_last_active_state)
+		_start_topmost_state(_last_active_state, params)
 		
 		_update_active_state(new_state)
 
@@ -187,12 +187,12 @@ func _activate_state(new_state: State) -> void:
 # Starts the topmost state if there is one and it is not running already. This will
 # also install signal handlers to allow the state to tell us to transition to other
 # states.
-func _start_topmost_state(prev_state: State) -> void:
+func _start_topmost_state(prev_state: State, params: Dictionary) -> void:
 	if not _state_stack.empty():
 		var top_state: State = _state_stack.back()
 		if top_state != null and not top_state.is_running():
 			_install_signal_handlers(top_state)
-			top_state.state_started(prev_state)
+			top_state.state_started(prev_state, params)
 
 
 # Pauses the topmost state if there is one and it is running. This will also remove

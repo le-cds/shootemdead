@@ -10,8 +10,8 @@ onready var animator: AnimationPlayer = $AnimationPlayer
 ####################################################################################
 # State Lifecycle
 
-func state_started(prev_state: State) -> void:
-	.state_started(prev_state)
+func state_started(prev_state: State, params: Dictionary) -> void:
+	.state_started(prev_state, params)
 	
 	# Start our animation player, which will cause our speed modification
 	# methods to be called

@@ -14,6 +14,9 @@ const STATE_GAME_INTRO := "game_intro"
 const STATE_GAME := "game"
 const STATE_GAME_OVER := "game_over"
 
+# State parameter keys
+const STATE_GAME_OVER_SCORE := "score"
+
 # Names of audio busses
 const MUSIC_BUS := "Music"
 const SOUND_BUS := "Sounds"

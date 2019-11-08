@@ -29,8 +29,8 @@ func _ready():
 ####################################################################################
 # State Lifecycle
 
-func state_started(prev_state: State) -> void:
-	.state_started(prev_state)
+func state_started(prev_state: State, params: Dictionary) -> void:
+	.state_started(prev_state, params)
 	
 	# Initialize the values of our controls
 	_music_volume.value = Settings.get_music_volume()
