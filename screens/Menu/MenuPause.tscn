@@ -21,9 +21,9 @@ margin_bottom = 360.314
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 215.0
-margin_top = 93.0
+margin_top = 92.0
 margin_right = 425.0
-margin_bottom = 267.0
+margin_bottom = 266.0
 theme = ExtResource( 2 )
 custom_constants/separation = 10
 
@@ -35,7 +35,7 @@ custom_constants/margin_bottom = 30
 [node name="PauseLabel" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer"]
 margin_right = 210.0
 margin_bottom = 24.0
-text = "GAME PAUSED"
+text = "GAME_PAUSED_LABEL"
 align = 1
 
 [node name="ResumeButton" type="Button" parent="CenterContainer/VBoxContainer"]

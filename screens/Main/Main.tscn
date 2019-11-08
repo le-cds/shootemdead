@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://screens/Main/Main.gd" type="Script" id=1]
 [ext_resource path="res://assets/background.png" type="Texture" id=2]
@@ -13,7 +13,8 @@
 [ext_resource path="res://screens/Menu/MenuSettings.tscn" type="PackedScene" id=11]
 [ext_resource path="res://screens/Game/GameIntro.tscn" type="PackedScene" id=12]
 [ext_resource path="res://screens/Game/Game.tscn" type="PackedScene" id=13]
-[ext_resource path="res://screens/Menu/MenuPause.tscn" type="PackedScene" id=14]
+[ext_resource path="res://screens/Game/GameOver.tscn" type="PackedScene" id=14]
+[ext_resource path="res://screens/Menu/MenuPause.tscn" type="PackedScene" id=15]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -31,11 +32,15 @@ texture = ExtResource( 2 )
 position = Vector2( 0.304337, 109.864 )
 script = ExtResource( 3 )
 scenes = [ ExtResource( 4 ) ]
+scene_selection = 1
 sidescroller_width = 640
 distance = 0
 pre_spawn = true
+base_speed = 20
 speed_factor = 0.2
+spawn_group = ""
 running = true
+despawn_distance = 20
 
 [node name="MedClouds" type="Node2D" parent="Background" groups=[
 "sidescrollers",
@@ -43,11 +48,15 @@ running = true
 position = Vector2( 0, 139.69 )
 script = ExtResource( 3 )
 scenes = [ ExtResource( 5 ) ]
+scene_selection = 1
 sidescroller_width = 640
 distance = 0
 pre_spawn = true
+base_speed = 20
 speed_factor = 0.35
+spawn_group = ""
 running = true
+despawn_distance = 20
 
 [node name="NearClouds" type="Node2D" parent="Background" groups=[
 "sidescrollers",
@@ -55,11 +64,15 @@ running = true
 position = Vector2( 0, 170.427 )
 script = ExtResource( 3 )
 scenes = [ ExtResource( 6 ) ]
+scene_selection = 1
 sidescroller_width = 640
 distance = 0
 pre_spawn = true
+base_speed = 20
 speed_factor = 0.5
+spawn_group = ""
 running = true
+despawn_distance = 20
 
 [node name="Foreground" type="Node2D" parent="."]
 
@@ -69,10 +82,15 @@ running = true
 position = Vector2( 0, 360 )
 script = ExtResource( 3 )
 scenes = [ ExtResource( 7 ) ]
+scene_selection = 1
 sidescroller_width = 640
 distance = 0
 pre_spawn = true
+base_speed = 20
+speed_factor = 1.0
+spawn_group = ""
 running = true
+despawn_distance = 20
 
 [node name="Buildings" type="Node2D" parent="Foreground" groups=[
 "sidescrollers",
@@ -80,10 +98,15 @@ running = true
 position = Vector2( 0, 316 )
 script = ExtResource( 3 )
 scenes = [ ExtResource( 8 ) ]
+scene_selection = 1
 sidescroller_width = 640
 distance = 20
 pre_spawn = true
+base_speed = 20
+speed_factor = 1.0
+spawn_group = ""
 running = true
+despawn_distance = 20
 
 [node name="StateMachine" type="Node2D" parent="."]
 script = ExtResource( 9 )
@@ -110,6 +133,10 @@ state_id = "game_intro"
 visible = false
 state_id = "game"
 
-[node name="MenuPause" parent="StateMachine" instance=ExtResource( 14 )]
+[node name="GameOver" parent="StateMachine" instance=ExtResource( 14 )]
+visible = false
+state_id = "game_over"
+
+[node name="MenuPause" parent="StateMachine" instance=ExtResource( 15 )]
 visible = false
 state_id = "menu_pause"

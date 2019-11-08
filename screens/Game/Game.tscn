@@ -3,7 +3,7 @@
 [ext_resource path="res://screens/Game/Game.gd" type="Script" id=1]
 [ext_resource path="res://screens/Game/HUD.tscn" type="PackedScene" id=2]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 resource_name = "BombExplosion"
 length = 0.3
 tracks/0/type = "value"
@@ -19,8 +19,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "FadeHUD"
+[sub_resource type="Animation" id=2]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("HUD:modulate")
@@ -47,6 +46,6 @@ mouse_filter = 2
 [node name="HUD" parent="." instance=ExtResource( 2 )]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/BombExplosion = SubResource( 2 )
-anims/FadeHUD = SubResource( 1 )
+anims/BombExplosion = SubResource( 1 )
+anims/FadeHUD = SubResource( 2 )
 [connection signal="bomb_requested" from="HUD" to="." method="_on_HUD_bomb_requested"]

@@ -40,6 +40,8 @@ func _ready():
 func state_started(prev_state: State) -> void:
 	.state_started(prev_state)
 	
+	ScrollSpeedController.interpolate_base_speed(Constants.BASE_SPEED_MENU, 1)
+	
 	_button_animator.play(FADE_ANIMATION)
 	
 	# Only animate the rest back in if we don't come from a menu.

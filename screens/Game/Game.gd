@@ -89,9 +89,7 @@ func state_activated() -> void:
 func state_deactivated() -> void:
 	.state_deactivated()
 	
-	# Remove all enemies
-	for enemy in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
-		(enemy as Enemy).survive(false, true)
+	_remove_enemies()
 
 
 ####################################################################################
@@ -107,7 +105,11 @@ func _game_over() -> void:
 	_animation_player.play_backwards("FadeHUD")
 	yield(_animation_player, "animation_finished")
 	
-	transition_pop_to_root()
+	# TODO Do this properly once the state machine supports parameters
+	var game_over = $"../GameOver"
+	game_over.score = _score
+	
+	transition_push(Constants.STATE_GAME_OVER)
 
 
 ####################################################################################
@@ -116,7 +118,7 @@ func _game_over() -> void:
 # Initiates the enemy spawning process.
 func _building_spawned(scene: Node) -> void:
 	# We're only interested if the game is running
-	if not (is_running() and scene is Building):
+	if not (is_running() and _lifes > 0 and scene is Building):
 		return
 	
 	var building: Building = scene as Building
@@ -154,6 +156,12 @@ func _enemy_left(enemy: Enemy, survived: bool) -> void:
 		_show_score_multiplier(enemy, _score_multiplier)
 	
 	_update_hud()
+
+
+# Tells all remaining enemies to survive.
+func _remove_enemies() -> void:
+	for enemy in get_tree().get_nodes_in_group(Constants.GROUP_ENEMIES):
+		(enemy as Enemy).survive(false, true)
 
 
 # Updates the score multiplier after the given enemy was killed. The idea is that
