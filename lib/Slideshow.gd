@@ -26,7 +26,7 @@ export var display_time := 2.0
 
 # How long fades should be. If this is zero, we don't fade, but simply hide or
 # show textures directly.
-export var fade_time :=1
+export var fade_time := 1.0
 
 # Time between fading out one texture and fading in the next.
 export var black_time := 0.1
