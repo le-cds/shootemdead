@@ -27,4 +27,4 @@ const BASE_SPEED_MENU := 15
 const BASE_SPEED_GAME := 50
 
 # The maximum width of our enemies. Used to compute the width of enemy spawn zones.
-const MAX_ENEMY_WIDTH := 10
+const MAX_ENEMY_WIDTH := 50
