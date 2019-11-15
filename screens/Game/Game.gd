@@ -187,8 +187,7 @@ func _show_score_multiplier(enemy: Enemy, multiplier: int) -> void:
 
 # Throws and explodes a bomb, if possible.
 func _throw_bomb() -> void:
-	#if _bomb_progress >= MAX_BOMB_PROGRESS:
-		
+	if _bomb_progress >= MAX_BOMB_PROGRESS:
 		# Gather all enemies and find their min and max ID (important for the score
 		# multiplier)
 		var min_enemy_id := _next_enemy_id
