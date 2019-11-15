@@ -4,6 +4,9 @@ extends TextureRect
 # This is a TextureRect that can show a sequence of textures, either once
 # or in constant rotation. Fades between textures are done by modifying the
 # modulation color. The slideshow must be started by calling start().
+# 
+# If the slideshow is configured to be skippable, then the user can press
+# keys and mouse buttons to cause the next slide to appear.
 class_name Slideshow
 
 
@@ -34,6 +37,9 @@ export var black_time := 0.1
 # Whether to repeat the slideshow once it has finished.
 export var repeat := false
 
+# Whether the user can skip to the next slide through an action or clicking.
+export var skippable := true
+
 
 ####################################################################################
 # State
@@ -46,6 +52,12 @@ const COLOR_TRANSPARENT := Color(1.0, 1.0, 1.0, 0.0)
 var _curr_texture_index := NO_TEXTURE
 # Whether the slideshow is currently running.
 var _running := false
+# Only true if we're showing a slide,
+var _showing_slide := false
+# Whether we need to switch to the next slide directly after showing it. This
+# happens if the user indicates they want to skip a slide while we're currently
+# transitioning.
+var _skip_next_slide := false
 
 # A tween we'll use to fade things.
 var _tween: Tween
@@ -59,6 +71,23 @@ func _init() -> void:
 	self.add_child(_tween)
 
 
+func _input(event) -> void:
+	if skippable:
+		# Detect whether the user wants to skip the current slide.
+		var interesting_action := false
+		
+		interesting_action = interesting_action || event.is_action_pressed("ui_accept")
+		interesting_action = interesting_action || event.is_action_pressed("ui_select")
+		interesting_action = interesting_action || event.is_action_pressed("ui_cancel")
+		
+		if event is InputEventMouseButton:
+			var button_event := event as InputEventMouseButton
+			interesting_action = interesting_action || button_event.pressed
+		
+		if interesting_action:
+			_skip_slide()
+
+
 ####################################################################################
 # Slideshow
 
@@ -70,10 +99,13 @@ func start() -> void:
 		_show_next()
 
 
+# Shows the next slide.
 func _show_next() -> void:
 	# Don't do anything if there are no textures
 	if textures == null or textures.empty():
 		return
+	
+	_showing_slide = false
 	
 	# If we have a current texture, we need to fade that out
 	var had_previous_texture := false
@@ -122,9 +154,16 @@ func _show_next() -> void:
 			_tween.start()
 			yield(_tween, "tween_completed")
 		
-		# Schedule this method to be called again
-		_tween.interpolate_deferred_callback(self, display_time, "_show_next")
-		_tween.start()
+		_showing_slide = true
+		
+		if _skip_next_slide:
+			# Call this method again immediately
+			_skip_next_slide = false
+			call_deferred("_show_next")
+		else:
+			# Schedule this method to be called again
+			_tween.interpolate_deferred_callback(self, display_time, "_show_next")
+			_tween.start()
 		
 	else:
 		# Be sure that we're not displaying anything
@@ -133,6 +172,16 @@ func _show_next() -> void:
 		# There is no next slide; signal the signal!
 		_running = false
 		emit_signal("slideshow_finished")
+
+
+# Skips the current slide if one is shown at the moment, or sets a flag to skip
+# the next slide if we're currently transitioning
+func _skip_slide() -> void:
+	if _showing_slide:
+		_tween.stop_all()
+		call_deferred("_show_next")
+	else:
+		_skip_next_slide = true
 
 
 ####################################################################################
