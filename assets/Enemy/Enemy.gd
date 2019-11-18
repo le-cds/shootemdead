@@ -26,7 +26,7 @@ onready var _visibiliy_notifier: VisibilityNotifier2D = $VisibilityNotifier2D
 # State
 
 # Number off different enemies we can load.
-const ENEMY_COUNT = 7
+const ENEMY_COUNT = 15
 
 # The enemy's ID. Used by the game for scoring multiplier purposes.
 var id := 0
