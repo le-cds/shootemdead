@@ -26,31 +26,44 @@ onready var _visibiliy_notifier: VisibilityNotifier2D = $VisibilityNotifier2D
 # State
 
 # Number off different enemies we can load.
-const ENEMY_COUNT = 15
+const ENEMY_COUNT := 14
+
+# The chance we have of going into troll mode instead of being a typical enemy.
+const CHANCE_OF_TROLLING := 0.05
 
 # The enemy's ID. Used by the game for scoring multiplier purposes.
 var id := 0
 
-# Whether the enemy is still alive.
-var _alive := true
+# The number of lifes the enemy has initially. This is
+var _initial_lifes := 1
+
+# How many lifes the enemy still has
+var _lifes: int
 
 
 ####################################################################################
 # Scene Lifecycle
 
 func _ready() -> void:
-	var enemy_no: int = 1 + randi() % ENEMY_COUNT
-	var texture = load("res://assets/Enemy/enemy" + str(enemy_no) + ".png")
-	_texture_rect.texture = texture
+	if randf() < CHANCE_OF_TROLLING:
+		# We're in troll mode!
+		_texture_rect.texture = load("res://assets/Enemy/troll.png")
+		_initial_lifes = 3
+	else:
+		# We're a regular enemy
+		var enemy_no: int = 1 + randi() % ENEMY_COUNT
+		_texture_rect.texture = load("res://assets/Enemy/enemy" + str(enemy_no) + ".png")
 	
 	_texture_rect.rect_size = Vector2(
 		_texture_rect.texture.get_width(),
 		_texture_rect.texture.get_height())
+	
+	_lifes = _initial_lifes
 
 
 func _process(delta) -> void:
 	var global_pos: Vector2 = _texture_rect.rect_global_position
-	if _alive and global_pos.x + _texture_rect.rect_size.x < 0:
+	if is_alive() and global_pos.x + _texture_rect.rect_size.x < 0:
 		survive(true, false)
 
 
@@ -70,7 +83,7 @@ func survive(signal_listeners: bool, play_animation: bool) -> void:
 # Tells listeners that this enemy has died, triggers any death animations and
 # removes it from the scene.
 func die(signal_listeners: bool) -> void:
-	_alive = false
+	_lifes = 0
 	
 	if (signal_listeners):
 		emit_signal("enemy_left", self, false)
@@ -82,6 +95,31 @@ func die(signal_listeners: bool) -> void:
 	# The animation is long enough to allow the particle emitter to finish
 	yield(_animation_player, "animation_finished")
 	self.queue_free()
+
+
+# Hit the enemy. This is called with coordinates by the mouse handler.
+func _hit(x: float, y: float) -> void:
+	if is_alive():
+		# If we hit a transparent pixel... DON'T CARE!!!
+		# (we need to lock the image to get pixel data out of it)
+		var image: Image = _texture_rect.texture.get_data()
+		image.lock()
+		var hit_pixel: Color = image.get_pixel(round(x), round(y))
+		image.unlock()
+		
+		if hit_pixel.a > 0:
+			_lifes -= 1
+			
+			if _lifes > 0:
+				# Dim the enemy
+				self.modulate.a = (_lifes as float) / _initial_lifes
+			
+			else:
+				# Place the blood splatter origin at hit point
+				_blood_splatter.position.x = x
+				_blood_splatter.position.y = y
+				
+				die(true)
 
 
 ####################################################################################
@@ -102,7 +140,7 @@ func get_top_center() -> Vector2:
 
 # Whether the enemy is still alive.
 func is_alive() -> bool:
-	return _alive
+	return _lifes > 0
 
 
 # Whether the enemy (or at least parts of the enemy) are currently visible.
@@ -119,16 +157,4 @@ func _on_TextureRect_gui_input(event):
 		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
 		
 		if mouse_event.button_index == BUTTON_LEFT and mouse_event.pressed:
-			# If we hit a transparent pixel... DON'T CARE!!!
-			var image: Image = _texture_rect.texture.get_data()
-			image.lock()
-			var hit_pixel: Color = image.get_pixel(
-				round(mouse_event.position.x),
-				round(mouse_event.position.y))
-			image.unlock()
-			
-			if hit_pixel.a > 0:
-				# Place the blood splatter origin at hit point
-				_blood_splatter.position = mouse_event.position
-				
-				die(true)
+			_hit(mouse_event.position.x, mouse_event.position.y)
