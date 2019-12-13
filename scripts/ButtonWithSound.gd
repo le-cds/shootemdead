@@ -6,9 +6,9 @@ class_name ButtonWithSound
 
 
 # The sound we play when the mouse cursor enters us.
-export(AudioStream) var hover_sound: AudioStream = preload("res://assets/Sounds/shot_big_1.ogg")
+export(AudioStream) var hover_sound: AudioStream = preload("res://assets/Sounds/menu_hover.ogg")
 # The sound we play when the mouse cursor clicks us.
-export(AudioStream) var click_sound: AudioStream = preload("res://assets/Sounds/shot_big_2.ogg")
+export(AudioStream) var click_sound: AudioStream = preload("res://assets/Sounds/menu_select.ogg")
 
 
 func _init() -> void:
