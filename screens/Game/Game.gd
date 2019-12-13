@@ -30,6 +30,7 @@ var sounds_gun = [
 	preload("res://assets/Sounds/shot_big_1.ogg"),
 	preload("res://assets/Sounds/shot_big_2.ogg")
 ]
+var sounds_bomb = preload("res://assets/Sounds/bomb.ogg")
 
 
 # Scene elements we'll need to manipulate
@@ -231,6 +232,7 @@ func _throw_bomb() -> void:
 				enemy.die(false)
 			
 			$AnimationPlayer.play("BombExplosion")
+			SoundPlayer.play_sound(self, sounds_bomb)
 			
 			_update_hud()
 
