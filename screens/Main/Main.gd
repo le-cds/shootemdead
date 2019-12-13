@@ -31,7 +31,7 @@ func _ready() -> void:
 	# Display the menu after half a second
 	yield(get_tree().create_timer(0.5), "timeout")
 	_state_machine.transition_push(Constants.STATE_MENU_MAIN)
-	_state_machine.transition_push(Constants.STATE_GAME)
+	#state_machine.transition_push(Constants.STATE_GAME)
 
 
 ####################################################################################
