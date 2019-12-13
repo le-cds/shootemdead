@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://screens/Menu/MenuMain.gd" type="Script" id=1]
 [ext_resource path="res://assets/Themes/default_theme.tres" type="Theme" id=2]
-[ext_resource path="res://assets/Themes/details_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://scripts/ButtonWithSound.gd" type="Script" id=3]
+[ext_resource path="res://assets/Themes/details_font.tres" type="DynamicFont" id=4]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade"
@@ -54,6 +55,7 @@ size_flags_vertical = 3
 shortcut_in_tooltip = false
 text = "NEW_GAME_BUTTON"
 align = 0
+script = ExtResource( 3 )
 
 [node name="ButtonSettings" type="Button" parent="ButtonContainer"]
 margin_top = 40.0
@@ -63,6 +65,7 @@ size_flags_vertical = 3
 shortcut_in_tooltip = false
 text = "SETTINGS_BUTTON"
 align = 0
+script = ExtResource( 3 )
 
 [node name="ButtonExit" type="Button" parent="ButtonContainer"]
 margin_top = 80.0
@@ -71,6 +74,7 @@ margin_bottom = 110.0
 size_flags_vertical = 3
 text = "QUIT_BUTTON"
 align = 0
+script = ExtResource( 3 )
 
 [node name="MiscContainer" type="HBoxContainer" parent="."]
 margin_left = 424.0
@@ -83,7 +87,7 @@ theme = ExtResource( 2 )
 margin_right = 82.0
 margin_bottom = 21.0
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "Version Label"
 valign = 2
 

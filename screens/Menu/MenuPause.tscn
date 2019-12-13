@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://screens/Menu/MenuPause.gd" type="Script" id=1]
 [ext_resource path="res://assets/Themes/default_theme.tres" type="Theme" id=2]
+[ext_resource path="res://scripts/ButtonWithSound.gd" type="Script" id=3]
 
 [node name="MenuPause" type="Node2D"]
 pause_mode = 2
@@ -44,6 +45,7 @@ margin_right = 210.0
 margin_bottom = 94.0
 rect_min_size = Vector2( 0, 30 )
 text = "RESUME_BUTTON"
+script = ExtResource( 3 )
 
 [node name="MainMenuButton" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 104.0
@@ -51,6 +53,7 @@ margin_right = 210.0
 margin_bottom = 134.0
 rect_min_size = Vector2( 0, 30 )
 text = "MAIN_MENU_BUTTON"
+script = ExtResource( 3 )
 
 [node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 144.0
@@ -58,6 +61,7 @@ margin_right = 210.0
 margin_bottom = 174.0
 rect_min_size = Vector2( 0, 30 )
 text = "QUIT_BUTTON"
+script = ExtResource( 3 )
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

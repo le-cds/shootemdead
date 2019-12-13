@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/Buildings/Building.gd"
 }, {
+"base": "Button",
+"class": "ButtonWithSound",
+"language": "GDScript",
+"path": "res://scripts/ButtonWithSound.gd"
+}, {
+"base": "CheckBox",
+"class": "CheckBoxWithSound",
+"language": "GDScript",
+"path": "res://scripts/CheckBoxWithSound.gd"
+}, {
 "base": "Node2D",
 "class": "EndlessSidescroller",
 "language": "GDScript",
@@ -56,6 +66,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Building": "",
+"ButtonWithSound": "",
+"CheckBoxWithSound": "",
 "EndlessSidescroller": "",
 "Enemy": "",
 "HUD": "",

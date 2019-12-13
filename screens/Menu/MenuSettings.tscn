@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://screens/Menu/MenuSettings.gd" type="Script" id=1]
 [ext_resource path="res://assets/Themes/default_theme.tres" type="Theme" id=2]
+[ext_resource path="res://scripts/CheckBoxWithSound.gd" type="Script" id=3]
+[ext_resource path="res://scripts/ButtonWithSound.gd" type="Script" id=4]
 
 [sub_resource type="ButtonGroup" id=1]
 resource_name = "GoreGroup"
@@ -55,6 +57,7 @@ max_value = 1.0
 step = 0.02
 page = 0.2
 value = 0.5
+ticks_on_borders = false
 
 [node name="SoundLabelContainer" type="MarginContainer" parent="VBoxContainer/SettingsContainer/VBoxContainer"]
 margin_top = 48.0
@@ -76,6 +79,7 @@ max_value = 1.0
 step = 0.02
 page = 0.2
 value = 0.5
+ticks_on_borders = false
 
 [node name="GoreLabelContainer" type="MarginContainer" parent="VBoxContainer/SettingsContainer/VBoxContainer"]
 margin_top = 111.0
@@ -95,6 +99,7 @@ margin_right = 218.0
 margin_bottom = 186.0
 group = SubResource( 1 )
 text = "GORE_1_BUTTON"
+script = ExtResource( 3 )
 
 [node name="GoreOption2" type="CheckBox" parent="VBoxContainer/SettingsContainer/VBoxContainer"]
 margin_top = 190.0
@@ -102,6 +107,7 @@ margin_right = 218.0
 margin_bottom = 222.0
 group = SubResource( 1 )
 text = "GORE_2_BUTTON"
+script = ExtResource( 3 )
 
 [node name="BackButton" type="Button" parent="VBoxContainer"]
 margin_top = 241.0
@@ -110,6 +116,7 @@ margin_bottom = 271.0
 rect_min_size = Vector2( 0, 30 )
 text = "BACK_BUTTON"
 align = 0
+script = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/fade = SubResource( 2 )
