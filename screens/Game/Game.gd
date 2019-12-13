@@ -18,9 +18,21 @@ const BASE_SCORE_PER_ENEMY := 1000
 const GAME_SPEED_INCREMENT := 4
 
 
+# The scene we use to display score multipliers whenever the player kills things
 var score_multiplier_scene = preload("res://screens/Game/ScoreMultiplier.tscn")
 
 
+# Resources we'll use
+var sounds_gun = [
+	preload("res://assets/Sounds/shot_small_1.ogg"),
+	preload("res://assets/Sounds/shot_small_2.ogg"),
+	preload("res://assets/Sounds/shot_small_3.ogg"),
+	preload("res://assets/Sounds/shot_big_1.ogg"),
+	preload("res://assets/Sounds/shot_big_2.ogg")
+]
+
+
+# Scene elements we'll need to manipulate
 onready var _hud: HUD = $HUD
 onready var _animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -234,3 +246,13 @@ func _update_hud() -> void:
 
 func _on_HUD_bomb_requested():
 	_throw_bomb()
+
+
+####################################################################################
+# Sound Handling
+
+func _input(event):
+	if not is_running():
+		return
+	elif event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		SoundPlayer.play_sound(self, sounds_gun[randi() % sounds_gun.size()])

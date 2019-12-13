@@ -80,6 +80,7 @@ config/version="0.1.0"
 Constants="*res://scripts/Constants.gd"
 Settings="*res://scripts/Settings.gd"
 ScrollSpeedController="*res://scripts/ScrollSpeedController.gd"
+SoundPlayer="*res://scripts/SoundPlayer.gd"
 
 [debug]
 
