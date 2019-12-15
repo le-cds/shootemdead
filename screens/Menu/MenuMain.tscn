@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://screens/Menu/MenuMain.gd" type="Script" id=1]
-[ext_resource path="res://assets/Themes/default_theme.tres" type="Theme" id=2]
-[ext_resource path="res://scripts/ButtonWithSound.gd" type="Script" id=3]
-[ext_resource path="res://assets/Themes/details_font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/title.png" type="Texture" id=2]
+[ext_resource path="res://assets/Themes/details_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/Themes/default_theme.tres" type="Theme" id=4]
+[ext_resource path="res://scripts/ButtonWithSound.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade"
@@ -36,16 +37,45 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Statics:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="MenuMain" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="Statics" type="Node2D" parent="."]
+
+[node name="Title" type="TextureRect" parent="Statics"]
+margin_right = 368.0
+margin_bottom = 208.0
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="Statics"]
+margin_left = 424.0
+margin_top = 335.0
+margin_right = 506.0
+margin_bottom = 356.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 3 )
+text = "Version Label"
+valign = 2
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
 margin_left = 415.0
 margin_top = 202.0
 margin_right = 643.0
 margin_bottom = 312.0
-theme = ExtResource( 2 )
+theme = ExtResource( 4 )
 custom_constants/separation = 10
 
 [node name="ButtonPlay" type="Button" parent="ButtonContainer"]
@@ -55,7 +85,7 @@ size_flags_vertical = 3
 shortcut_in_tooltip = false
 text = "NEW_GAME_BUTTON"
 align = 0
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 
 [node name="ButtonSettings" type="Button" parent="ButtonContainer"]
 margin_top = 40.0
@@ -65,7 +95,7 @@ size_flags_vertical = 3
 shortcut_in_tooltip = false
 text = "SETTINGS_BUTTON"
 align = 0
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 
 [node name="ButtonExit" type="Button" parent="ButtonContainer"]
 margin_top = 80.0
@@ -74,22 +104,14 @@ margin_bottom = 110.0
 size_flags_vertical = 3
 text = "QUIT_BUTTON"
 align = 0
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 
 [node name="MiscContainer" type="HBoxContainer" parent="."]
 margin_left = 424.0
 margin_top = 335.0
 margin_right = 583.0
 margin_bottom = 356.0
-theme = ExtResource( 2 )
-
-[node name="Label" type="Label" parent="MiscContainer"]
-margin_right = 82.0
-margin_bottom = 21.0
-size_flags_vertical = 1
-custom_fonts/font = ExtResource( 4 )
-text = "Version Label"
-valign = 2
+theme = ExtResource( 4 )
 
 [node name="ButtonAnimator" type="AnimationPlayer" parent="."]
 anims/fade = SubResource( 1 )

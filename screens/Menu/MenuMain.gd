@@ -17,9 +17,10 @@ signal start_new_game()
 ####################################################################################
 # Scene Objects
 
+onready var _title_animator: AnimationPlayer = $TitleAnimator
 onready var _button_animator: AnimationPlayer = $ButtonAnimator
 onready var _misc_animator: AnimationPlayer = $MiscAnimator
-onready var _version_label: Label = $MiscContainer/Label
+onready var _version_label: Label = $Statics/Label
 
 
 ####################################################################################
