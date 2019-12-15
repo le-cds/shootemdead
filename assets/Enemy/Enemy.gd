@@ -14,12 +14,35 @@ signal enemy_left(enemy, survived)
 
 
 ####################################################################################
-# Scene Objects
+# Scene Objects and Resources
 
 onready var _texture_rect: TextureRect = $Visuals/TextureRect
 onready var _animation_player: AnimationPlayer = $AnimationPlayer
 onready var _blood_splatter: Particles2D = $BloodSplatter
 onready var _visibiliy_notifier: VisibilityNotifier2D = $VisibilityNotifier2D
+
+# Resources we'll use
+var sounds_scream = [
+	preload("res://assets/Sounds/scream_01.ogg"),
+	preload("res://assets/Sounds/scream_02.ogg"),
+	preload("res://assets/Sounds/scream_03.ogg"),
+	preload("res://assets/Sounds/scream_04.ogg"),
+	preload("res://assets/Sounds/scream_05.ogg"),
+	preload("res://assets/Sounds/scream_06.ogg"),
+	preload("res://assets/Sounds/scream_07.ogg"),
+	preload("res://assets/Sounds/scream_08.ogg"),
+	preload("res://assets/Sounds/scream_09.ogg"),
+	preload("res://assets/Sounds/scream_10.ogg"),
+	preload("res://assets/Sounds/scream_11.ogg"),
+	preload("res://assets/Sounds/scream_12.ogg"),
+	preload("res://assets/Sounds/scream_13.ogg"),
+	preload("res://assets/Sounds/scream_14.ogg"),
+	preload("res://assets/Sounds/scream_15.ogg"),
+	preload("res://assets/Sounds/scream_16.ogg"),
+	preload("res://assets/Sounds/scream_17.ogg"),
+	preload("res://assets/Sounds/scream_18.ogg")
+]
+var sounds_wilhelm_scream = preload("res://assets/Sounds/scream_wilhelm.ogg")
 
 
 ####################################################################################
@@ -33,6 +56,8 @@ const CHANCE_OF_TROLLING := 0.05
 
 # The enemy's ID. Used by the game for scoring multiplier purposes.
 var id := 0
+
+var _troll_mode := false
 
 # The number of lifes the enemy has initially. This is
 var _initial_lifes := 1
@@ -48,6 +73,7 @@ func _ready() -> void:
 	if randf() < CHANCE_OF_TROLLING:
 		# We're in troll mode!
 		_texture_rect.texture = load("res://assets/Enemy/troll.png")
+		_troll_mode = true
 		_initial_lifes = 3
 	else:
 		# We're a regular enemy
@@ -89,12 +115,23 @@ func die(signal_listeners: bool) -> void:
 		emit_signal("enemy_left", self, false)
 	
 	# Trigger effects
-	_animation_player.play("Hide")
+	_animation_player.play("Die")
 	_blood_splatter.emitting = true
 	
-	# The animation is long enough to allow the particle emitter to finish
+	# The animation is long enough to allow the particle emitter to finish and will
+	# also trigger our _die_sound function. Handy!
 	yield(_animation_player, "animation_finished")
 	self.queue_free()
+
+
+func _die_sound():
+	var sound: AudioStream
+	if _troll_mode:
+		sound = sounds_wilhelm_scream
+	else:
+		sound = sounds_scream[randi() % sounds_scream.size()]
+		
+	SoundPlayer.play_sound(self, sound)
 
 
 # Hit the enemy. This is called with coordinates by the mouse handler.
