@@ -1,5 +1,14 @@
 # Shoot Em Dead
 
+A project I did to get the hang of the [Godot](https://godotengine.org/) engine. The game was written for Godot 3.1, and does not yet work with Godot 3.2.
+
+## Just Developer Things
+
+Are you a connoisseur of fine code? The `lib` folder contains code intended to be reused in other projects. This includes:
+
+* GUI stuff, such as `ProgressTiles` and `Slideshow`.
+* A stack-based state machine. Everyone seems to have one, so here’s mine.
+
 ## Credits
 
 * The font _MatchupPro_ is part of the [_Humble Fonts Free_](https://somepx.itch.io/humble-fonts-free) font pack by [Eeve Somepx](https://somepx.itch.io)
