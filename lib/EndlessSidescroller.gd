@@ -179,7 +179,8 @@ func _spawn(x: int) -> void:
 		last_scene = new_scene
 
 
-# Chooses the next scene to be spawned, subject to the 
+# Chooses the next scene to be spawned, subject to the scene we're currently
+# showing as well as the scene selection mode.
 func _choose_next_scene() -> PackedScene:
 	if scenes == null or scenes.size() == 0:
 		# Nothing to spawn
@@ -209,6 +210,9 @@ func _choose_next_scene() -> PackedScene:
 					last_scene_index = rand_index
 				
 				return scenes[last_scene_index]
+			
+			_:
+				return null
 
 
 # Removes the given scene and triggers the scene_left signal.
