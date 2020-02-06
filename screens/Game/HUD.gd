@@ -19,6 +19,14 @@ onready var score_label: Label = $MarginContainer/HBoxContainer/ScoreLabel
 
 
 ####################################################################################
+# Scene Lifecycle
+
+func _process(delta) -> void:
+	if Input.is_action_just_pressed("bomb"):
+		emit_signal("bomb_requested")
+
+
+####################################################################################
 # Setters
 
 func set_max_lifes(lifes: int) -> void:
