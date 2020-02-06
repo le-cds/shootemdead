@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://screens/Game/HUD.gd" type="Script" id=1]
 [ext_resource path="res://lib/ProgressTiles.gd" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://assets/Themes/progress_border.png" type="Texture" id=6]
 [ext_resource path="res://assets/Themes/progress_fill.png" type="Texture" id=7]
 [ext_resource path="res://assets/Themes/MatchupPro.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://lib/BlinkingLabel.gd" type="Script" id=9]
+[ext_resource path="res://assets/Themes/details_font.tres" type="DynamicFont" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 60
@@ -68,6 +70,19 @@ margin_bottom = 18.0
 size_flags_horizontal = 3
 texture_over = ExtResource( 6 )
 texture_progress = ExtResource( 7 )
+
+[node name="BombReadyLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+visible = false
+margin_top = 44.0
+margin_right = 103.0
+margin_bottom = 57.0
+custom_fonts/font = ExtResource( 10 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "B_FOR_BOMB_LABEL"
+align = 2
+script = ExtResource( 9 )
+colors = [ Color( 1, 0, 0, 1 ), Color( 1, 0.984314, 0.0705882, 1 ) ]
+delay = 0.07
 
 [node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer"]
 margin_left = 132.0

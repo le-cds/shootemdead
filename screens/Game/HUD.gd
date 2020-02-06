@@ -16,6 +16,7 @@ signal bomb_requested()
 onready var life_bar: ProgressTiles = $MarginContainer/HBoxContainer/VBoxContainer/LifeBar
 onready var bomb_progress: ProgressBar = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/BombProgress
 onready var score_label: Label = $MarginContainer/HBoxContainer/ScoreLabel
+onready var bomb_ready_label: BlinkingLabel = $MarginContainer/HBoxContainer/VBoxContainer/BombReadyLabel
 
 
 ####################################################################################
@@ -43,6 +44,11 @@ func set_max_bomb_progress(bomb: int) -> void:
 
 func set_bomb_progress(bomb: int) -> void:
 	bomb_progress.value = bomb
+	
+	var bomb_ready: bool = bomb_progress.value == bomb_progress.max_value
+	
+	bomb_ready_label.visible = bomb_ready
+	bomb_ready_label.running = bomb_ready
 
 
 func set_score(score: int) -> void:
