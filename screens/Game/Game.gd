@@ -31,6 +31,7 @@ var sounds_gun = [
 	preload("res://assets/Sounds/shot_big_2.ogg")
 ]
 var sounds_bomb = preload("res://assets/Sounds/bomb.ogg")
+var sounds_no_bomb = preload("res://assets/Sounds/bomb_unavailable.ogg")
 
 
 # Scene elements we'll need to manipulate
@@ -200,6 +201,10 @@ func _show_score_multiplier(enemy: Enemy, multiplier: int) -> void:
 
 # Throws and explodes a bomb, if possible.
 func _throw_bomb() -> void:
+	# We're not interested if this thing isn't running
+	if not is_running():
+		return
+	
 	if _bomb_progress >= MAX_BOMB_PROGRESS:
 		# Gather all enemies and find their min and max ID (important for the score
 		# multiplier)
@@ -235,6 +240,10 @@ func _throw_bomb() -> void:
 			SoundPlayer.play_sound(self, sounds_bomb)
 			
 			_update_hud()
+	
+	else:
+		# We don't have a bomb yet. Play a sound!
+		SoundPlayer.play_sound(self, sounds_no_bomb)
 
 
 ####################################################################################
