@@ -1,6 +1,8 @@
 # Shoot Em Dead
 
-A project I did to get the hang of the [Godot](https://godotengine.org/) engine. The game was written for Godot 3.1, and does not yet work with Godot 3.2.
+A project I did to get the hang of the [Godot](https://godotengine.org/) engine. Works with Godot 3.2.
+
+![Screenshot](screenshot.png)
 
 ## Just Developer Things
 
