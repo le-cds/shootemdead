@@ -42,6 +42,7 @@ func state_started(prev_state: State, params: Dictionary) -> void:
 	.state_started(prev_state, params)
 	
 	ScrollSpeedController.interpolate_base_speed(Constants.BASE_SPEED_MENU, 1)
+	MusicPlayer.play(MusicPlayer.Music.MENU_MUSIC)
 	
 	_button_animator.play(FADE_ANIMATION)
 	

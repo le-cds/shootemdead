@@ -13,6 +13,9 @@ onready var animator: AnimationPlayer = $AnimationPlayer
 func state_started(prev_state: State, params: Dictionary) -> void:
 	.state_started(prev_state, params)
 	
+	# Set music to silence
+	MusicPlayer.play(MusicPlayer.Music.SILENCE)
+	
 	# Start our animation player, which will cause our speed modification
 	# methods to be called
 	animator.play("Intro")

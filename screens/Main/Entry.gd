@@ -43,3 +43,6 @@ func _on_Slideshow_slideshow_finished():
 	_animation.play("FadeSplash")
 	yield(_animation, "animation_finished")
 	_splash.queue_free()
+	
+	# This would be dangerous if loading our main menu took long
+	_main_parent.get_child(0).start()

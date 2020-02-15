@@ -100,6 +100,13 @@ func state_activated() -> void:
 	_animation_player.play("FadeHUD")
 
 
+func state_started(prev_state: State, params: Dictionary) -> void:
+	.state_started(prev_state, params)
+	
+	# Start proper game music!
+	MusicPlayer.play(MusicPlayer.Music.GAME_MUSIC)
+
+
 func state_deactivated() -> void:
 	.state_deactivated()
 	

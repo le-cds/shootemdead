@@ -27,11 +27,16 @@ func _ready() -> void:
 	# Hook the game up to receive events from the buildings sidescroller in order
 	# to spawn enemies
 	_buildings.connect("scene_spawned", _state_game, "_building_spawned")
+
+
+func start() -> void:
+	# Start the music immediately
+	MusicPlayer.play(MusicPlayer.Music.MENU_MUSIC)
 	
 	# Display the menu after half a second
 	yield(get_tree().create_timer(0.5), "timeout")
 	_state_machine.transition_push(Constants.STATE_MENU_MAIN)
-	#state_machine.transition_push(Constants.STATE_GAME)
+#	_state_machine.transition_push(Constants.STATE_GAME)
 
 
 ####################################################################################
