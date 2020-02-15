@@ -15,7 +15,7 @@ const VOLUME_NORMAL := 0
 const VOLUME_SILENT := -80
 
 # Fade time in seconds.
-const FADE_TIME := 1.0
+const DEFAULT_FADE_TIME := 1.0
 
 # Array of available music streams, in the same order as the enumeration
 # constants..
@@ -68,7 +68,7 @@ func _ready() -> void:
 
 # Plays the given piece of music. Valid pieces of music are defined in the Music
 # enumeration.
-func play(next_piece: int) -> void:
+func play(next_piece: int, fade_time: float = DEFAULT_FADE_TIME) -> void:
 	# Reset invalid pieces to silence
 	if next_piece < 0 or next_piece >= _streams.size():
 		next_piece = Music.SILENCE
@@ -88,7 +88,7 @@ func play(next_piece: int) -> void:
 			"volume_db",
 			VOLUME_NORMAL,
 			VOLUME_SILENT,
-			FADE_TIME,
+			fade_time,
 			Tween.TRANS_LINEAR,
 			Tween.EASE_IN)
 	
@@ -105,7 +105,7 @@ func play(next_piece: int) -> void:
 				"volume_db",
 				VOLUME_SILENT,
 				VOLUME_NORMAL,
-				FADE_TIME,
+				fade_time,
 				Tween.TRANS_LINEAR,
 				Tween.EASE_IN)
 			

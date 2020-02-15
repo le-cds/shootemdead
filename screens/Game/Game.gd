@@ -31,6 +31,7 @@ var sounds_gun = [
 	preload("res://assets/Sounds/shot_big_2.ogg")
 ]
 var sounds_bomb = preload("res://assets/Sounds/bomb.ogg")
+var sounds_bomb_ready = preload("res://assets/Sounds/bomb_ready.ogg")
 var sounds_no_bomb = preload("res://assets/Sounds/bomb_unavailable.ogg")
 
 
@@ -170,6 +171,9 @@ func _enemy_left(enemy: Enemy, survived: bool) -> void:
 		_bomb_progress += BOMB_PROGRESS
 		_score += BASE_SCORE_PER_ENEMY * _score_multiplier
 		_game_speed += GAME_SPEED_INCREMENT
+		
+		if _bomb_progress == MAX_BOMB_PROGRESS:
+			SoundPlayer.play_sound(self, sounds_bomb_ready, Constants.SOUND_BUS)
 		
 		ScrollSpeedController.interpolate_base_speed(_game_speed, 5)
 		
