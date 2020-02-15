@@ -93,6 +93,15 @@ func _process(delta) -> void:
 		survive(true, false)
 
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+		
+		if mouse_event.button_index == BUTTON_LEFT and mouse_event.pressed:
+			if _hit():
+				get_tree().set_input_as_handled()
+
+
 # Tells listeners that this enemy has survived, optionally triggers animations and
 # removes it from the scene.
 func survive(signal_listeners: bool, play_animation: bool) -> void:
@@ -134,29 +143,39 @@ func _die_sound():
 	SoundPlayer.play_sound(self, sound)
 
 
-# Hit the enemy. This is called with coordinates by the mouse handler.
-func _hit(x: float, y: float) -> void:
+# Called if the left mouse button was pressed. Returns if the press resulted in
+# this enemy being hit.
+func _hit() -> bool:
 	if is_alive():
-		# If we hit a transparent pixel... DON'T CARE!!!
-		# (we need to lock the image to get pixel data out of it)
-		var image: Image = _texture_rect.texture.get_data()
-		image.lock()
-		var hit_pixel: Color = image.get_pixel(round(x), round(y))
-		image.unlock()
-		
-		if hit_pixel.a > 0:
-			_lifes -= 1
+		# Turn the global coordinates into local coordinates
+		var local_pos: Vector2 = _texture_rect.get_local_mouse_position()
+		if _texture_rect.get_rect().has_point(local_pos):
+			# If we hit a transparent pixel... DON'T CARE!!!
+			# (we need to lock the image to get pixel data out of it)
+			var image: Image = _texture_rect.texture.get_data()
+			image.lock()
+			var hit_pixel: Color = image.get_pixel(
+				round(local_pos.x),
+				round(local_pos.y))
+			image.unlock()
 			
-			if _lifes > 0:
-				# Dim the enemy
-				self.modulate.a = (_lifes as float) / _initial_lifes
-			
-			else:
-				# Place the blood splatter origin at hit point
-				_blood_splatter.position.x = x
-				_blood_splatter.position.y = y
+			if hit_pixel.a > 0:
+				_lifes -= 1
 				
-				die(true)
+				if _lifes > 0:
+					# Dim the enemy
+					self.modulate.a = (_lifes as float) / _initial_lifes
+				
+				else:
+					# Place the blood splatter origin at hit point
+					_blood_splatter.position.x = local_pos.x
+					_blood_splatter.position.y = local_pos.y
+					
+					die(true)
+					
+				return true
+	
+	return false
 
 
 ####################################################################################
@@ -184,14 +203,3 @@ func is_alive() -> bool:
 func is_on_screen() -> bool:
 	var enemy_global_rect = _texture_rect.get_global_rect()
 	return enemy_global_rect.position.x < get_viewport().size.x and enemy_global_rect.end.x > 0
-
-
-####################################################################################
-# Event Handling
-
-func _on_TextureRect_gui_input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
-		
-		if mouse_event.button_index == BUTTON_LEFT and mouse_event.pressed:
-			_hit(mouse_event.position.x, mouse_event.position.y)

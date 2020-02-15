@@ -54,6 +54,7 @@ tracks/1/keys = {
 script = ExtResource( 1 )
 
 [node name="Statics" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 
 [node name="Title" type="TextureRect" parent="Statics"]
 margin_right = 368.0
@@ -71,12 +72,15 @@ text = "Version Label"
 valign = 2
 
 [node name="ButtonContainer" type="VBoxContainer" parent="."]
-margin_left = 415.0
+margin_left = 646.0
 margin_top = 202.0
-margin_right = 643.0
+margin_right = 874.0
 margin_bottom = 312.0
 theme = ExtResource( 4 )
 custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ButtonPlay" type="Button" parent="ButtonContainer"]
 margin_right = 228.0
@@ -107,6 +111,7 @@ align = 0
 script = ExtResource( 5 )
 
 [node name="MiscContainer" type="HBoxContainer" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 margin_left = 424.0
 margin_top = 335.0
 margin_right = 583.0
