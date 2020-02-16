@@ -4,6 +4,8 @@ A project I did to get the hang of the [Godot](https://godotengine.org/) engine.
 
 ![Screenshot](screenshot.png)
 
+Play [on itch.io](https://chrisdanger.itch.io/shoot-em-dead)! In your browser! Yay technology!
+
 ## Just Developer Things
 
 Are you a connoisseur of fine code? The `lib` folder contains code intended to be reused in other projects. This includes:
