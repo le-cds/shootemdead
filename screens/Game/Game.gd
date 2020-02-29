@@ -63,6 +63,10 @@ var _score_multiplier: int
 func _ready() -> void:
 	_hud.set_max_lifes(MAX_LIFES)
 	_hud.set_max_bomb_progress(MAX_BOMB_PROGRESS)
+	
+	MusicPlayer.add_stream(
+		Constants.MUSIC_ID_GAME,
+		preload("res://assets/Music/local_forecast.ogg"))
 
 
 func _process(delta) -> void:
@@ -105,7 +109,7 @@ func state_started(prev_state: State, params: Dictionary) -> void:
 	.state_started(prev_state, params)
 	
 	# Start proper game music!
-	MusicPlayer.play(MusicPlayer.Music.GAME_MUSIC)
+	MusicPlayer.play(Constants.MUSIC_ID_GAME)
 
 
 func state_deactivated() -> void:

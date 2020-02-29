@@ -21,6 +21,10 @@ const STATE_GAME_OVER_SCORE := "score"
 const MUSIC_BUS := "Music"
 const SOUND_BUS := "Sounds"
 
+# Music IDs.
+const MUSIC_ID_MENU := "menu"
+const MUSIC_ID_GAME := "game"
+
 # Base speed of EndlessSidescrollers while in the menu.
 const BASE_SPEED_MENU := 15
 # Base speed of EndlessSidescrollers while in the game.

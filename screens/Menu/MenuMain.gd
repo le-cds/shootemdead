@@ -30,6 +30,8 @@ func _ready():
 	# We want to play animations when pausing
 	set_yield_on_pause(true)
 	
+	MusicPlayer.add_stream(Constants.MUSIC_ID_MENU, preload("res://assets/Music/false_awakenings.ogg"))
+	
 	# We need to fill in the version number
 	_version_label.text = tr("VERSION_LABEL") % \
 		ProjectSettings.get("application/config/version")
@@ -42,7 +44,7 @@ func state_started(prev_state: State, params: Dictionary) -> void:
 	.state_started(prev_state, params)
 	
 	ScrollSpeedController.interpolate_base_speed(Constants.BASE_SPEED_MENU, 1)
-	MusicPlayer.play(MusicPlayer.Music.MENU_MUSIC)
+	MusicPlayer.play(Constants.MUSIC_ID_MENU)
 	
 	_button_animator.play(FADE_ANIMATION)
 	

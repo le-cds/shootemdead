@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func start() -> void:
 	# Start the music immediately
-	MusicPlayer.play(MusicPlayer.Music.MENU_MUSIC)
+	MusicPlayer.play(Constants.MUSIC_ID_MENU)
 	
 	# Display the menu after half a second
 	yield(get_tree().create_timer(0.5), "timeout")
